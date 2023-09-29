@@ -1,12 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using JuanYunis.DataAccessLayer;
+using JuanYunis.Models;
+using JuanYunis.ViewModels.HomeVMs;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace JuanYunis.Controllers
 {
     public class HomeController : Controller
     {
-        public async Task<IActionResult>  Index()
+        private readonly AppDbContext _context;
+
+        public HomeController(AppDbContext context)
         {
-            return View();
+            _context = context;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            HomeVM homeVMs = new HomeVM
+            {
+                Sliders = await _context.Sliders.Where(s => s.IsDeleted == false).ToListAsync()
+            };
+            return View(homeVMs);
         }
     }
 }
