@@ -1,12 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using JuanYunis.DataAccessLayer;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace JuanYunis.Controllers
 {
     public class ContactController : Controller
     {
-        public IActionResult Index()
+        private readonly AppDbContext _context;
+
+        public ContactController(AppDbContext context)
         {
-            return View();
+            _context = context;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            Dictionary<string, string> settings = await _context.Settings.ToDictionaryAsync(s=>s.Key,s=>s.Value);
+
+            return View(settings);
         }
     }
 }
