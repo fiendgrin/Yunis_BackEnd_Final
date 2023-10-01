@@ -1457,3 +1457,19 @@ Values
 ('product-12.jpg',1,48,0,'2023-09-30','Yunis',null,null,null,null),
 ('product-1.jpg',1,49,0,'2023-09-30','Yunis',null,null,null,null),
 ('product-2.jpg',1,50,0,'2023-09-30','Yunis',null,null,null,null)
+
+
+Insert Into ProductImages
+Values
+('product-1.jpg',0,7,0,'2023-09-30','Yunis',null,null,null,null),
+('product-2.jpg',0,7,0,'2023-09-30','Yunis',null,null,null,null),
+('product-3.jpg',0,7,0,'2023-09-30','Yunis',null,null,null,null),
+('product-4.jpg',0,14,0,'2023-09-30','Yunis',null,null,null,null),
+('product-5.jpg',0,14,0,'2023-09-30','Yunis',null,null,null,null),
+('product-6.jpg',0,50,0,'2023-09-30','Yunis',null,null,null,null),
+('product-7.jpg',0,50,0,'2023-09-30','Yunis',null,null,null,null),
+('product-8.jpg',0,50,0,'2023-09-30','Yunis',null,null,null,null),
+('product-9.jpg',0,50,0,'2023-09-30','Yunis',null,null,null,null),
+('product-10.jpg',0,49,0,'2023-09-30','Yunis',null,null,null,null),
+('product-11.jpg',0,49,0,'2023-09-30','Yunis',null,null,null,null),
+('product-12.jpg',0,49,0,'2023-09-30','Yunis',null,null,null,null)
