@@ -6,5 +6,7 @@ namespace JuanYunis.Models
     {
         [StringLength(100)]
         public string Name { get; set; }
+
+        IEnumerable<Product> products { get; set; }
     }
 }

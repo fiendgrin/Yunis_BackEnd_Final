@@ -23,8 +23,10 @@ namespace JuanYunis.Models
         public bool IsTopSeller { get; set; }
         public bool IsOurProduct { get; set; }
 
-        public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public int? CategoryId { get; set; }
+        public Category? Category { get; set; }
+
+        public IEnumerable<ProductImage>? ProductImages { get; set; }
 
 
     }

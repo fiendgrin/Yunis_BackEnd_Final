@@ -1,4 +1,6 @@
 ﻿$(document).ready(function () {
+
+    //NavBar
     let arr = $('#navBarMenuContent').children();
 
     $(window).on("load", function () {
@@ -21,5 +23,33 @@
             console.log(window.location.pathname);
 
         }
+    });
+
+
+    //Search
+    $('#searchInput').keyup(function () {
+        console.log(1)
+        if ($(this).val().trim().length == 0) {
+            $('#searchBody').html('');
+        }
+    });
+
+    $('#searchBtn').click(function (e) {
+        e.preventDefault();
+        console.log(1)
+
+        let search = $('#searchInput').val().trim();
+        let searchUrl = 'product/search?search=' + search;
+        console.log(searchUrl);
+
+        if (search.length > 2) {
+            fetch(searchUrl)
+                .then(res => res.text())
+                .then(data => {
+                    console.log(data);
+                    $('#searchBody').html(data);
+                });
+        }
+
     });
 })
