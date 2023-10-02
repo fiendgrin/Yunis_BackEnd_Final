@@ -125,6 +125,13 @@
                 $('.minicart-content-box').html(data)
 
             });
+        let url1 = 'Basket/BasketInfo'
+        fetch(url1)
+            .then(res => res.text())
+            .then(data => {
+                $('.BasketCount').html(data)
+
+            });
 
     });
 

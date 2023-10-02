@@ -18,11 +18,18 @@ namespace JuanYunis.Services
             _context = context;
         }
 
+        public static int BasketCount { get; set; }
+
+        public async Task<int> GetBasketCountsync() 
+        {
+            return BasketCount;
+        }
+
         public async Task<List<BasketVM>> GetBasketsAsync() 
         {
-            List<BasketVM> basketVMs = null;
+            List<BasketVM>? basketVMs = null;
 
-            string cookie = _contextAccessor.HttpContext.Request.Cookies["basket"];
+            string? cookie = _contextAccessor.HttpContext.Request.Cookies["basket"];
 
             if (!string.IsNullOrWhiteSpace(cookie))
             {
@@ -44,7 +51,7 @@ namespace JuanYunis.Services
                 basketVM.EcoTax = product.EcoTax;
 
             }
-
+            BasketCount = basketVMs.Count;
             return basketVMs;
         }
 

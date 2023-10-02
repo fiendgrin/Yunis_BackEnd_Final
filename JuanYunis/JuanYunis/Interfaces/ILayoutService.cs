@@ -5,8 +5,8 @@ namespace JuanYunis.Interfaces
 {
     public interface ILayoutService
     {
+        Task<int> GetBasketCountsync();
         Task<Dictionary<string, string>> GetSettingsAsync();
-
         Task<List<BasketVM>> GetBasketsAsync();
     }
 }

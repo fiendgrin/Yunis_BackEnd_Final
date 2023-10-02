@@ -1,5 +1,6 @@
 ﻿using JuanYunis.DataAccessLayer;
 using JuanYunis.Models;
+using JuanYunis.Services;
 using JuanYunis.ViewModels.BasketVMs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -69,6 +70,7 @@ namespace JuanYunis.Controllers
                 basketVM.EcoTax = product.EcoTax;
 
             }
+            LayoutService.BasketCount = ProductsInCart.Count;
 
 
             return PartialView("_CartPartial", ProductsInCart);

@@ -1,10 +1,13 @@
 ﻿using JuanYunis.DataAccessLayer;
+using JuanYunis.Interfaces;
 using JuanYunis.Models;
+using JuanYunis.Services;
 using JuanYunis.ViewModels.BasketVMs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using NuGet.ContentModel;
 
 namespace JuanYunis.Controllers
 {
@@ -78,6 +81,8 @@ namespace JuanYunis.Controllers
 
             }
 
+            LayoutService.BasketCount = basketVMs.Count;
+
             return PartialView("_BasketPartial", basketVMs);
         }
 
@@ -110,7 +115,25 @@ namespace JuanYunis.Controllers
 
             }
 
+            LayoutService.BasketCount = ProductsInBasket.Count;
+
             return PartialView("_BasketPartial", ProductsInBasket);
+        }
+
+        public async Task<IActionResult> BasketInfo() 
+        {
+            string? cookie = Request.Cookies["basket"];
+
+
+            if (!string.IsNullOrWhiteSpace(cookie))
+            {
+                List<BasketVM>? ProductsInBasket = JsonConvert.DeserializeObject<List<BasketVM>>(cookie);
+
+                return Ok(ProductsInBasket.Count);
+            }
+            else {   return Ok(0); }
+
+         
         }
     }
 }
