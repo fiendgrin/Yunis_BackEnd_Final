@@ -87,8 +87,8 @@
 
     //addToCart
 
- 
-    $(document).on('click', '.removeFromBasket', function (e) {
+
+    $(document).on('click', '.removeFromBasket, .removeFromCart', function (e) {
         e.preventDefault();
         console.log($(this).attr('href'))
         let urlArr = $(this).attr('href').split('/');
@@ -98,19 +98,20 @@
             .then(res => res.text())
             .then(data => {
                 $('.minicart-content-box').html(data);
-                //$('#totalCart').html($('#totalBasket').html());
-                //$('#subTotalCart').html($('#subTotalBasket').html());
-                //$('#taxesCart').html($('#taxesBasket').html());
+                $('#totalCart').html($('#totalBasket').html());
+                $('#subTotalCart').html($('#subTotalBasket').html());
+                $('#taxesCart').html($('#taxesBasket').html());
 
             });
-        //let cartUrl = '/Cart/RemoveCart/' + Id
-        //fetch(cartUrl)
-        //    .then(res => res.text())
-        //    .then(data => {
-        //        $('#cartBody').html(data);
-        //        $('#totalCart').html($('#totalBasket').html());
-        //        $('#subTotalCart').html($('#subTotalBasket').html());
-        //        $('#taxesCart').html($('#taxesBasket').html());
+        let cartUrl = '/Cart/RemoveCart/' + Id
+        fetch(cartUrl)
+            .then(res => res.text())
+            .then(data => {
+                $('#cartBody').html(data);
+                $('#totalCart').html($('#totalBasket').html());
+                $('#subTotalCart').html($('#subTotalBasket').html());
+                $('#taxesCart').html($('#taxesBasket').html());
+            });
 
 
     });

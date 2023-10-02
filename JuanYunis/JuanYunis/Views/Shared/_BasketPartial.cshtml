@@ -28,21 +28,21 @@
     <ul>
         <li>
             <span>sub-total</span>
-            <span><strong>$@Model.Sum(b=>b.Price*b.Count)</strong></span>
+            <span id="subTotalBasket"><strong>$@Model.Sum(b=>b.Price*b.Count)</strong></span>
         </li>
         <li>
             <span>Eco Tax</span>
-            <span><strong>$@Model.Sum(b=>b.EcoTax)</strong></span>
+            <span id="taxesBasket"><strong>$@Model.Sum(b=>b.EcoTax)</strong></span>
         </li>
         <li class="total">
             <span>total</span>
-            <span><strong>$@Model.Sum(b=>(b.Price+b.EcoTax)*b.Count)</strong></span>
+            <span id="totalBasket"><strong>$@Model.Sum(b=>(b.Price+b.EcoTax)*b.Count)</strong></span>
         </li>
     </ul>
 </div>
 
 <div class="minicart-button">
-    <a href="cart.html"><i class="fa fa-shopping-cart"></i> view cart</a>
+    <a asp-controller="Cart" asp-action="Index"><i class="fa fa-shopping-cart"></i> view cart</a>
     <a href="cart.html"><i class="fa fa-share"></i> checkout</a>
 </div>
 
