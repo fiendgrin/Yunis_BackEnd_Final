@@ -10,12 +10,14 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(buil
 
 
 builder.Services.AddScoped<ILayoutService,LayoutService>();
+builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 
 
 var app = builder.Build();
 
-app.MapControllerRoute("default","{Controller=Home}/{Action=Index}/{id?}");
 app.UseStaticFiles();
+app.UseSession();
+app.MapControllerRoute("default","{Controller=Home}/{Action=Index}/{id?}");
 
 app.Run();
