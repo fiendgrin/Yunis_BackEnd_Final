@@ -80,5 +80,37 @@ namespace JuanYunis.Controllers
 
             return PartialView("_BasketPartial", basketVMs);
         }
+
+        public async Task<IActionResult> RemoveBasket(int? id)
+        {
+            if (id == null) return BadRequest("Id is required");
+
+            string? basket = Request.Cookies["basket"];
+
+            List<BasketVM>? ProductsInBasket = JsonConvert.DeserializeObject<List<BasketVM>>(basket);
+
+
+            if (!ProductsInBasket.Any(p => p.Id == id)) return NotFound("Id Not Found");
+
+            ProductsInBasket.RemoveAll(p => p.Id == id);
+
+            basket = JsonConvert.SerializeObject(ProductsInBasket);
+
+            Response.Cookies.Append("basket", basket);
+
+            foreach (BasketVM basketVM in ProductsInBasket)
+            {
+                Product product = await _context.Products
+                  .Include(p => p.ProductImages.Where(pi => pi.IsDeleted == false && pi.IsMainImage == true))
+                  .FirstOrDefaultAsync(p => p.Id == basketVM.Id);
+                basketVM.Title = product.Title;
+                basketVM.Image = product.ProductImages.FirstOrDefault().Image;
+                basketVM.Price = product.DiscountedPrice > 0 ? product.DiscountedPrice : product.Price;
+                basketVM.EcoTax = product.EcoTax;
+
+            }
+
+            return PartialView("_BasketPartial", ProductsInBasket);
+        }
     }
 }
