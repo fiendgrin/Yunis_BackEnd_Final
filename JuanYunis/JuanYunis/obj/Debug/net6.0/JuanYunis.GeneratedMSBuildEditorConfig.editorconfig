@@ -9,57 +9,61 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = JuanYunis
 build_property.RootNamespace = JuanYunis
-build_property.ProjectDir = C:\Users\yunisah\source\repos\JuanYunis\JuanYunis\
+build_property.ProjectDir = C:\Users\yunis\source\repos\JuanYunis\JuanYunis\
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\yunisah\source\repos\JuanYunis\JuanYunis
+build_property.MSBuildProjectDirectory = C:\Users\yunis\source\repos\JuanYunis\JuanYunis
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/yunisah/source/repos/JuanYunis/JuanYunis/Views/Blog/Index.cshtml]
+[C:/Users/yunis/source/repos/JuanYunis/JuanYunis/Views/Blog/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQmxvZ1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/yunisah/source/repos/JuanYunis/JuanYunis/Views/Cart/Index.cshtml]
+[C:/Users/yunis/source/repos/JuanYunis/JuanYunis/Views/Cart/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/yunisah/source/repos/JuanYunis/JuanYunis/Views/Contact/Index.cshtml]
+[C:/Users/yunis/source/repos/JuanYunis/JuanYunis/Views/Contact/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFjdFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/yunisah/source/repos/JuanYunis/JuanYunis/Views/Home/Index.cshtml]
+[C:/Users/yunis/source/repos/JuanYunis/JuanYunis/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/yunisah/source/repos/JuanYunis/JuanYunis/Views/Product/Index.cshtml]
+[C:/Users/yunis/source/repos/JuanYunis/JuanYunis/Views/Product/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/yunisah/source/repos/JuanYunis/JuanYunis/Views/Shared/_BasketPartial.cshtml]
+[C:/Users/yunis/source/repos/JuanYunis/JuanYunis/Views/Shared/_BasketPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9CYXNrZXRQYXJ0aWFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/yunisah/source/repos/JuanYunis/JuanYunis/Views/Shared/_CartPartial.cshtml]
+[C:/Users/yunis/source/repos/JuanYunis/JuanYunis/Views/Shared/_CartPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9DYXJ0UGFydGlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/yunisah/source/repos/JuanYunis/JuanYunis/Views/Shared/_Layout.cshtml]
+[C:/Users/yunis/source/repos/JuanYunis/JuanYunis/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/yunisah/source/repos/JuanYunis/JuanYunis/Views/Shared/_ModalPartial.cshtml]
+[C:/Users/yunis/source/repos/JuanYunis/JuanYunis/Views/Shared/_LoadMorePartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2FkTW9yZVBhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/yunis/source/repos/JuanYunis/JuanYunis/Views/Shared/_ModalPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Nb2RhbFBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/yunisah/source/repos/JuanYunis/JuanYunis/Views/Shared/_SearchPartial.cshtml]
+[C:/Users/yunis/source/repos/JuanYunis/JuanYunis/Views/Shared/_SearchPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TZWFyY2hQYXJ0aWFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/yunisah/source/repos/JuanYunis/JuanYunis/Views/_ViewImports.cshtml]
+[C:/Users/yunis/source/repos/JuanYunis/JuanYunis/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/yunisah/source/repos/JuanYunis/JuanYunis/Views/_ViewStart.cshtml]
+[C:/Users/yunis/source/repos/JuanYunis/JuanYunis/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

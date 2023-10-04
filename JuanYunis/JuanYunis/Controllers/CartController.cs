@@ -70,9 +70,6 @@ namespace JuanYunis.Controllers
                 basketVM.EcoTax = product.EcoTax;
 
             }
-            LayoutService.BasketCount = ProductsInCart.Count;
-
-
             return PartialView("_CartPartial", ProductsInCart);
         }
     }

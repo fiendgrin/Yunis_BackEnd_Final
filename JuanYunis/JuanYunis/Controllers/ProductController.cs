@@ -1,5 +1,6 @@
 ﻿using JuanYunis.DataAccessLayer;
 using JuanYunis.Models;
+using JuanYunis.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,15 +9,41 @@ namespace JuanYunis.Controllers
     public class ProductController : Controller
     {
         private readonly AppDbContext _context;
-
+        private readonly int _pageSize = 9;
         public ProductController(AppDbContext context)
         {
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index( int currentPage = 1)
         {
-            return View();
+            ViewBag.LoadPageIndex = 1;
+            IQueryable<Product> products = _context.Products
+                .Include(p=>p.ProductImages.Where(pi=>pi.IsDeleted==false))
+                .Where(p => p.IsDeleted == false)
+                .OrderByDescending(p => p.Id);
+
+            return View(PageNatedList<Product>.Create(products, currentPage, _pageSize, 3));
+        }
+
+        public async Task<IActionResult> LoadMore(int? pageIndex)
+        {
+            if (pageIndex == null) return BadRequest();
+
+            if (pageIndex <= 0) return BadRequest();
+
+            IQueryable<Product> products = _context.Products
+                .Include(p => p.ProductImages.Where(pi => pi.IsDeleted == false))
+                .Where(p => p.IsDeleted == false)
+                .OrderByDescending(p => p.Id);
+
+
+            int maxPage = (int)Math.Ceiling((decimal)products.Count() / _pageSize);
+            if (pageIndex > maxPage) return BadRequest();
+
+            products = products.Skip((int)pageIndex * _pageSize).Take(_pageSize);
+
+            return PartialView("_LoadMorePartial", new List<Product>(products));
         }
 
         public async Task<IActionResult> Search(string search)

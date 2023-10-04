@@ -2,7 +2,6 @@
 @{
     Dictionary<string, string> settings = await layoutService.GetSettingsAsync();
     List<BasketVM> basketVMs = await layoutService.GetBasketsAsync();
-    int basketCount = await layoutService.GetBasketCountsync();
 }
 
 <!DOCTYPE html>
@@ -133,7 +132,7 @@
                                         <li>
                                             <a href="#" class="minicart-btn">
                                                 <i class="ion-bag"></i>
-                                                <div class="BasketCount notification">@basketCount</div>
+                                                <div class="BasketCount notification"></div>
                                              </a>                                     
                                         </li>
                                     </ul>

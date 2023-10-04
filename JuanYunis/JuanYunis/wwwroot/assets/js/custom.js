@@ -20,7 +20,7 @@
             } else if (window.location.pathname.toLowerCase() == "/contact" && path.toLowerCase() == "/contact us") {
                 $(arr[i]).addClass('active');
             }
-            console.log(window.location.pathname);
+           
 
         }
     });
@@ -28,7 +28,7 @@
 
     //Search
     $('#searchInput').keyup(function () {
-        console.log(1)
+      
         if ($(this).val().trim().length == 0) {
             $('#searchBody').html('');
         }
@@ -36,17 +36,17 @@
 
     $('#searchBtn').click(function (e) {
         e.preventDefault();
-        console.log(1)
+      
 
         let search = $('#searchInput').val().trim();
         let searchUrl = 'product/search?search=' + search;
-        console.log(searchUrl);
+     
 
         if (search.length > 2) {
             fetch(searchUrl)
                 .then(res => res.text())
                 .then(data => {
-                    console.log(data);
+                   
                     $('#searchBody').html(data);
                 });
         }
@@ -90,7 +90,7 @@
 
     $(document).on('click', '.removeFromBasket, .removeFromCart', function (e) {
         e.preventDefault();
-        console.log($(this).attr('href'))
+      
         let urlArr = $(this).attr('href').split('/');
         let Id = urlArr[urlArr.length - 1]
         let basketUrl = '/Basket/RemoveBasket/' + Id
@@ -117,22 +117,45 @@
     });
     $(document).on('click', '.addBasket, .removeFromBasket ', function (e) {
         e.preventDefault();
-        console.log(1)
         let url = $(this).attr('href');
+          
         fetch(url)
             .then(res => res.text())
             .then(data => {
                 $('.minicart-content-box').html(data)
-
             });
-        let url1 = 'Basket/BasketInfo'
-        fetch(url1)
-            .then(res => res.text())
-            .then(data => {
-                $('.BasketCount').html(data)
-
-            });
-
+          
+      
     });
+
+    //LoadMore
+    $(document).on('click', '.loadMoreBtn', function (e) {
+        e.preventDefault();
+        let url = $(this).attr('href');
+        console.log(url);
+        let pageIndex = $(this).data('pageindex');
+        console.log(pageIndex);
+
+        let totalPage = $(this).data('maxpage');
+        console.log(totalPage);
+
+        if (pageIndex > 0 && (pageIndex + 1) < totalPage) {
+            fetch(url + '?pageIndex=' + pageIndex)
+                .then(res => res.text())
+                .then(data => {
+                    $('.productContainer').append(data)
+                });
+        } else if (pageIndex == (totalPage - 1)) {
+            fetch(url + '?pageIndex=' + pageIndex)
+                .then(res => res.text())
+                .then(data => {
+                    $('.productContainer').append(data)
+                });
+            $('.loadMoreBtn').remove();
+        }
+        pageIndex++;
+        $('.loadMoreBtn').data("pageindex", pageIndex)
+    });
+
 
 })

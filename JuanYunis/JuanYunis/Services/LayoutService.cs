@@ -11,19 +11,17 @@ namespace JuanYunis.Services
     {
         private readonly AppDbContext _context;
         private readonly IHttpContextAccessor _contextAccessor;
+    
 
         public LayoutService(IHttpContextAccessor contextAccessor, AppDbContext context)
         {
             _contextAccessor = contextAccessor;
             _context = context;
+
         }
 
-        public static int BasketCount { get; set; }
 
-        public async Task<int> GetBasketCountsync() 
-        {
-            return BasketCount;
-        }
+     
 
         public async Task<List<BasketVM>> GetBasketsAsync() 
         {
@@ -51,7 +49,7 @@ namespace JuanYunis.Services
                 basketVM.EcoTax = product.EcoTax;
 
             }
-            BasketCount = basketVMs.Count;
+        
             return basketVMs;
         }
 

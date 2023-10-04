@@ -67,7 +67,7 @@ namespace JuanYunis.Controllers
 
             Response.Cookies.Append("basket", basket);
 
-            
+
 
             foreach (BasketVM basketVM in basketVMs)
             {
@@ -81,7 +81,6 @@ namespace JuanYunis.Controllers
 
             }
 
-            LayoutService.BasketCount = basketVMs.Count;
 
             return PartialView("_BasketPartial", basketVMs);
         }
@@ -115,25 +114,9 @@ namespace JuanYunis.Controllers
 
             }
 
-            LayoutService.BasketCount = ProductsInBasket.Count;
-
             return PartialView("_BasketPartial", ProductsInBasket);
         }
 
-        public async Task<IActionResult> BasketInfo() 
-        {
-            string? cookie = Request.Cookies["basket"];
-
-
-            if (!string.IsNullOrWhiteSpace(cookie))
-            {
-                List<BasketVM>? ProductsInBasket = JsonConvert.DeserializeObject<List<BasketVM>>(cookie);
-
-                return Ok(ProductsInBasket.Count);
-            }
-            else {   return Ok(0); }
-
-         
-        }
+      
     }
 }
