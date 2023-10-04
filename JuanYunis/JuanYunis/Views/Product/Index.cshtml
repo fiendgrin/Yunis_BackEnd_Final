@@ -32,20 +32,9 @@
                 <div class="col-lg-3 order-2 order-lg-1">
                     <div class="sidebar-wrapper">
                         <!-- single sidebar start -->
-                        <div class="sidebar-single">
-                            <div class="sidebar-title">
-                                <h3>Categories</h3>
-                            </div>
-                            <div class="sidebar-body">
-                                <ul class="color-list">
-                                    <li><a href="#">Mens <span>(10)</span></a></li>
-                                    <li><a href="#">Womens <span>(05)</span></a></li>
-                                    <li><a href="#">Sports <span>(15)</span></a></li>
-                                    <li><a href="#">Fabric <span>(12)</span></a></li>
-                                    <li><a href="#">Leather <span>(20)</span></a></li>
-                                </ul>
-                            </div>
-                        </div>
+
+                        @await Component.InvokeAsync("Category")
+                        
                         <!-- single sidebar end -->
                         <!-- single sidebar start -->
                         <div class="sidebar-single">
@@ -151,9 +140,12 @@
                         <div class="productContainer shop-product-wrap grid-view row mbn-50">
                             @await Html.PartialAsync("_LoadMorePartial",Model)
                         </div>
-                        <div class="mt-5 w-100">
-                            <a asp-controller="Product" asp-action="LoadMore" data-pageIndex="1" data-maxPage="@Model.TotalPage" class="loadMoreBtn btn w-100">Load More</a>
-                        </div>
+                        @if (Model.End != Model.Start)
+                        {
+                            <div class="mt-5 w-100">
+                                <a asp-controller="Product" asp-action="LoadMore" asp-route-categoryId="@Model.CategoryId" data-pageIndex="1" data-maxPage="@Model.TotalPage" class="loadMoreBtn btn w-100">Load More</a>
+                            </div>
+                        }
                         <!-- product item list end -->
                         <!-- start pagination area -->
                         <div class="paginatoin-area text-center mt-45">

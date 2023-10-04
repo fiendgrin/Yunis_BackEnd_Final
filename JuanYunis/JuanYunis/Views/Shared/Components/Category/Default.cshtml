@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Category>
+
+<div class="sidebar-single">
+    <div class="sidebar-title">
+        <h3>Categories</h3>
+    </div>
+    <div class="sidebar-body">
+        <ul class="color-list">
+            <li><a asp-controller="Product" asp-action="Index" >All</a></li>
+            @foreach (Category category in Model)
+            {
+                <li><a asp-controller="Product" asp-action="Index" asp-route-categoryId="@category.Id">@category.Name <span>(@category.Products?.Count())</span></a></li>
+            }
+        </ul>
+    </div>
+</div>

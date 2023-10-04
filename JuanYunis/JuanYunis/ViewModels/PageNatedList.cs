@@ -1,11 +1,14 @@
-﻿namespace JuanYunis.ViewModels
+﻿using JuanYunis.Models;
+
+namespace JuanYunis.ViewModels
 {
-    public class PageNatedList<T>: List<T>
+    public class PageNatedList<T> : List<T>
     {
-        public PageNatedList(IQueryable<T> query, int currentPage, int totalPage, int pageItemCount, int elementCount)
+        public PageNatedList(IQueryable<T> query, int currentPage, int totalPage, int pageItemCount, int elementCount, int? categoryId)
         {
             CurrentPage = currentPage;
             TotalPage = totalPage;
+
             HasPrev = CurrentPage > 1;
             HasNext = CurrentPage < TotalPage;
             Start = CurrentPage - (int)Math.Ceiling((decimal)(pageItemCount - 1) / 2);
@@ -47,6 +50,7 @@
 
             this.AddRange(query);
             ElementCount = elementCount;
+            CategoryId = categoryId;
 
         }
         public int CurrentPage { get; }
@@ -56,13 +60,13 @@
         public bool HasNext { get; }
         public int Start { get; }
         public int End { get; }
+        public int? CategoryId { get; }
 
-
-        public static PageNatedList<T> Create(IQueryable<T> query, int currentPage, int elementCount, int pageItemCount)
+        public static PageNatedList<T> Create(IQueryable<T> query, int currentPage, int elementCount, int pageItemCount,int? categoryId = null)
         {
             int totalPage = (int)Math.Ceiling((decimal)query.Count() / elementCount);
             query = query.Skip((currentPage - 1) * elementCount).Take(elementCount);
-            return new PageNatedList<T>(query, currentPage, totalPage, pageItemCount, elementCount);
+            return new PageNatedList<T>(query, currentPage, totalPage, pageItemCount, elementCount,categoryId);
         }
     }
 }

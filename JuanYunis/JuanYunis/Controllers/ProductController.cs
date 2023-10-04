@@ -15,27 +15,58 @@ namespace JuanYunis.Controllers
             _context = context;
         }
 
-        public IActionResult Index( int currentPage = 1)
+        //1.Index
+        //2.LoadMore
+        //3.Search
+        //4.Moadl
+
+        //1.Index
+        public IActionResult Index( int currentPage = 1, int? categoryId = null)
         {
             ViewBag.LoadPageIndex = 1;
-            IQueryable<Product> products = _context.Products
-                .Include(p=>p.ProductImages.Where(pi=>pi.IsDeleted==false))
+            IQueryable<Product>? products = null;
+            if (categoryId == null)
+            {
+              products = _context.Products
+                .Include(p => p.ProductImages.Where(pi => pi.IsDeleted == false))
                 .Where(p => p.IsDeleted == false)
                 .OrderByDescending(p => p.Id);
+            }
+            else 
+            {
+                products= _context.Products
+                .Include(p => p.ProductImages.Where(pi => pi.IsDeleted == false))
+                .Where(p => p.IsDeleted == false && p.CategoryId == categoryId)
+                .OrderByDescending(p => p.Id);
+            }
+            
 
-            return View(PageNatedList<Product>.Create(products, currentPage, _pageSize, 3));
+            return View(PageNatedList<Product>.Create(products, currentPage, _pageSize, 3,categoryId));
         }
-
-        public async Task<IActionResult> LoadMore(int? pageIndex)
+        //2.LoadMore
+        public async Task<IActionResult> LoadMore(int? pageIndex, int? categoryId = null)
         {
+
             if (pageIndex == null) return BadRequest();
 
             if (pageIndex <= 0) return BadRequest();
 
-            IQueryable<Product> products = _context.Products
+            IQueryable<Product>? products = null;
+            if (categoryId == null)
+            {
+                products = _context.Products
+                  .Include(p => p.ProductImages.Where(pi => pi.IsDeleted == false))
+                  .Where(p => p.IsDeleted == false)
+                  .OrderByDescending(p => p.Id);
+            }
+            else
+            {
+                products = _context.Products
                 .Include(p => p.ProductImages.Where(pi => pi.IsDeleted == false))
-                .Where(p => p.IsDeleted == false)
+                .Where(p => p.IsDeleted == false && p.CategoryId == categoryId)
                 .OrderByDescending(p => p.Id);
+            }
+
 
 
             int maxPage = (int)Math.Ceiling((decimal)products.Count() / _pageSize);
@@ -45,7 +76,7 @@ namespace JuanYunis.Controllers
 
             return PartialView("_LoadMorePartial", new List<Product>(products));
         }
-
+        //3.Search
         public async Task<IActionResult> Search(string search)
         {
             List<Product>? products = null;
@@ -67,7 +98,7 @@ namespace JuanYunis.Controllers
             }
             return PartialView("_SearchPartial", products);
         }
-
+        //4.Moadl
         public async Task<IActionResult> Modal(int? id)
         {
             if (id == null) return BadRequest("Id is required");
