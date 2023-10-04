@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JuanYunis.Areas.Manage.Controllers
 {
+    [Area("manage")]
     public class DashboardController : Controller
     {
-        [Area("Manage")]
         public IActionResult Index()
         {
             return View();
