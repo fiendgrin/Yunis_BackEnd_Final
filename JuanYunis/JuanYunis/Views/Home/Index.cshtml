@@ -98,7 +98,7 @@
                             <div class="product-item mb-50">
                                 <div class="product-thumb">
                                     <a asp-controller="Product" asp-action="Detail" asp-route-id="@product.Id">
-                                        <img src="~/assets/img/product/@product.ProductImages.FirstOrDefault(pi=>pi.IsMainImage==true).Image" alt="">
+                                        <img src="~/assets/img/product/@product.ProductImages?.FirstOrDefault(pi=>pi.IsMainImage==true)?.Image" alt="">
                                     </a>
                                 </div>
                                 <div class="product-content">
@@ -106,7 +106,7 @@
                                         <a asp-controller="Product" asp-action="Detail" asp-route-id="@product.Id">@product.Title</a>
                                     </h5>
                                     <div class="price-box">
-                                        @if (product.DiscountedPrice != null && product.DiscountedPrice >0)
+                                        @if (product?.DiscountedPrice != null && product.DiscountedPrice >0)
                                         {
                                             <span class="price-regular">$@product.DiscountedPrice</span>
                                             <span class="price-old"><del>$@product.Price</del></span>
@@ -190,7 +190,7 @@
                                 <div class="pro-item-small mt-30">
                                     <div class="product-thumb">
                                         <a asp-controller="Product" asp-action="Detail" asp-route-id="@topProduct.Id">
-                                            <img src="~/assets/img/product/@topProduct.ProductImages.FirstOrDefault(pi=>pi.IsMainImage==true).Image" alt="">
+                                            <img src="~/assets/img/product/@topProduct.ProductImages?.FirstOrDefault(pi=>pi.IsMainImage==true)?.Image" alt="">
                                         </a>
                                     </div>
                                     <div class="pro-small-content">
@@ -198,7 +198,7 @@
                                             <a asp-controller="Product" asp-action="Detail" asp-route-id="@topProduct.Id">@topProduct.Title</a>
                                         </h6>
                                         <div class="price-box">
-                                            @if (topProduct.DiscountedPrice != null && topProduct.DiscountedPrice > 0)
+                                            @if (topProduct?.DiscountedPrice != null && topProduct.DiscountedPrice > 0)
                                             {
                                                 <span class="price-regular">$@topProduct.DiscountedPrice</span>
                                                 <span class="price-old"><del>$@topProduct.Price</del></span>

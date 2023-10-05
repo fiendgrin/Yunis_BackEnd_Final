@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using JuanYunis.Attributes.ValidationAttributes;
 
 namespace JuanYunis.Models
 {
@@ -26,7 +27,16 @@ namespace JuanYunis.Models
         public int? CategoryId { get; set; }
         public Category? Category { get; set; }
 
-        public IEnumerable<ProductImage>? ProductImages { get; set; }
+        public List<ProductImage>? ProductImages { get; set; }
+
+        [FileTypes("image/png", "image/jpeg")]
+        [MaxFileSize(2)]
+        [NotMapped]
+        public IFormFile? MainFile { get; set; }
+        [FileTypes("image/png", "image/jpeg")]
+        [MaxFileSize(2)]
+        [NotMapped]
+        public IEnumerable<IFormFile>? Files { get; set; }
 
 
     }
