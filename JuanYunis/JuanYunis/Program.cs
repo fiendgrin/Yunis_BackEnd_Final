@@ -26,12 +26,18 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
 }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
+//builder.Services.Configure<SmtpSetting>(builder.Configuration.GetSection("SmtpSetting"));
+
 builder.Services.AddScoped<ILayoutService, LayoutService>();
+
+
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 
 
 var app = builder.Build();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseStaticFiles();
 app.UseSession();

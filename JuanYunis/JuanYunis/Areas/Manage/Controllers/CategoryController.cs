@@ -1,6 +1,7 @@
 ﻿using JuanYunis.DataAccessLayer;
 using JuanYunis.Models;
 using JuanYunis.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing.Drawing2D;
@@ -8,6 +9,7 @@ using System.Drawing.Drawing2D;
 namespace JuanYunis.Areas.Manage.Controllers
 {
     [Area("manage")]
+    [Authorize]
     public class CategoryController : Controller
     {
         private readonly AppDbContext _context;
