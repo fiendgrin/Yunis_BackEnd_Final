@@ -37,7 +37,10 @@ namespace JuanYunis.Areas.Manage.Controllers
         //1.Register(Get)
         //2.Register(Post)
         //3.Login(Get)
-
+        //4.Login(Post)
+        //5.Profile(Get)
+        //6.Profile(Post)
+        //7.Logout
         //======================================================================
 
         //1.Register(Get)
@@ -117,13 +120,13 @@ namespace JuanYunis.Areas.Manage.Controllers
             return RedirectToAction(nameof(Login));
         }
 
-
         //3.Login(Get)
         public async Task<IActionResult> Login()
         {
             return View();
         }
 
+        //4.Login(Post)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginVM loginVM)
@@ -170,6 +173,99 @@ namespace JuanYunis.Areas.Manage.Controllers
             return RedirectToAction("Index", "Dashboard", new { area = "manage" });
         }
 
+        //5.Profile(Get)
+        [Authorize(Roles = "SuperAdmin,Admin")]
+        public async Task<IActionResult> Profile()
+        {
+            AppUser appUser = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            if (appUser == null) return BadRequest();
+
+            ProfileVM profileVM = new ProfileVM
+            {
+                Name = appUser.Name,
+                SurName = appUser.SurName,
+                Email = appUser.Email,
+                UserName = appUser.UserName
+            };
+
+
+            return View(profileVM);
+        }
+
+        //6.Profile(Post)
+        [HttpPost]
+        [Authorize(Roles = "SuperAdmin,Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Profile(ProfileVM profileVM)
+        {
+            if (!ModelState.IsValid) return View(profileVM);
+
+            AppUser appUser = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            if(appUser == null) return NotFound();
+
+            if (appUser.NormalizedUserName != profileVM.UserName.Trim().ToUpperInvariant())
+            {
+                appUser.UserName = profileVM.UserName.Trim();
+            }
+
+            if (appUser.NormalizedEmail != profileVM.Email.Trim().ToUpperInvariant())
+            {
+
+                appUser.Email = profileVM.Email.Trim();
+            }
+
+            appUser.SurName = profileVM.SurName;
+            appUser.Name = profileVM.Name;
+
+            IdentityResult identityResult = await _userManager.UpdateAsync(appUser);
+
+            if (!identityResult.Succeeded)
+            {
+                foreach (IdentityError identityError in identityResult.Errors)
+                {
+                    ModelState.AddModelError("", identityError.Description);
+                }
+                return View(profileVM);
+            }
+
+            if (!string.IsNullOrWhiteSpace(profileVM.CurrentPassword))
+            {
+                if (!await _userManager.CheckPasswordAsync(appUser, profileVM.CurrentPassword))
+                {
+                    ModelState.AddModelError("CurrentPassword", "Current Password is Incorrect");
+                    return View(profileVM);
+                }
+
+                string token = await _userManager.GeneratePasswordResetTokenAsync(appUser);
+
+                identityResult = await _userManager.ResetPasswordAsync(appUser, token, profileVM.NewPassword);
+
+                if (!identityResult.Succeeded)
+                {
+                    foreach (IdentityError identityError in identityResult.Errors)
+                    {
+                        ModelState.AddModelError("", identityError.Description);
+                    }
+                    return View(profileVM);
+                }
+            }
+
+            await _signInManager.SignInAsync(appUser, true);
+
+            return RedirectToAction("Index", "Dashboard", new { area = "manage" });
+        }
+
+        //7.Logout
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(Login));
+        }
+
+
+        #region not used
         //public async Task<IActionResult> SuperAdmin()
         //{
         //    AppUser appUser = new AppUser { 
@@ -193,5 +289,6 @@ namespace JuanYunis.Areas.Manage.Controllers
 
         //    return Ok("Roles Created");
         //}
+        #endregion
     }
 }
