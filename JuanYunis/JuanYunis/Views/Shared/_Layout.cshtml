@@ -123,17 +123,28 @@
                                             <a href="#">
                                                 <i class="ion-ios-gear-outline"></i>
                                             </a>
-                                            <ul class="dropdown-list">
-                                                <li><a href="login-register.html">login</a></li>
-                                                <li><a href="login-register.html">register</a></li>
-                                                <li><a href="my-account.html">my account</a></li>
-                                            </ul>
+                                            @if (User.Identity.IsAuthenticated && User.IsInRole("Member"))
+                                            {
+                                                <ul class="dropdown-list">
+                                                    <li><a href="#">my account</a></li>
+                                                    <li><a href="login-register.html">check out</a></li>
+                                                    <li><a asp-controller="Account" asp-action="Logout">sign out</a></li>
+                                                </ul>
+                                            }
+                                            else
+                                            {
+
+                                                <ul class="dropdown-list">
+                                                    <li><a asp-controller="Account" asp-action="Login">login</a></li>
+                                                    <li><a asp-controller="Account" asp-action="Register">register</a></li>
+                                                </ul>
+                                            }
                                         </li>
                                         <li>
                                             <a href="#" class="minicart-btn">
                                                 <i class="ion-bag"></i>
                                                 <div class="BasketCount notification"></div>
-                                             </a>                                     
+                                            </a>
                                         </li>
                                     </ul>
                                 </div>
@@ -498,10 +509,9 @@
                         <button id="searchBtn" class="search-btn"><i class="ion-ios-search-strong"></i>search</button>
                     </form>
                     <div id="searchBody" style="max-height:300px; overflow:auto; z-index:10; top:55%; width:95%" class="bg-light d-flex flex-column position-absolute align-self-center">
-                 
                     </div>
                 </div>
-               
+
             </div>
         </div>
         <!-- offcanvas search form end -->
@@ -520,7 +530,7 @@
             </div>
         </div>
 
-       
+
         <!-- offcanvas mini cart end -->
         <!-- Scroll to top start -->
         <div class="scroll-top not-visible">
@@ -528,6 +538,7 @@
         </div>
         <!-- Scroll to Top End -->
         <!--=======================Javascript============================-->
+        @RenderSection("Scripts",false)
         <!--=== All Vendor Js ===-->
         <script src="~/assets/js/vendor.js"></script>
         <!--=== All Plugins Js ===-->

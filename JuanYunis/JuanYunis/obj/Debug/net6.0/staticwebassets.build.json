@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "c8iyHiDFrJYbgtZywmQLLqmkTc5iL4V52TVYw5AdCkk=",
+  "Hash": "fvlhfJJkVeDuPOrysDqwLiyDbvcGtKqU4GzlnJaI698=",
   "Source": "JuanYunis",
   "BasePath": "_content/JuanYunis",
   "Mode": "Default",
@@ -33284,6 +33284,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\templates\\EmailConfirm.html"
+    },
+    {
+      "Identity": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\templates\\ResetPassword.html",
+      "SourceId": "JuanYunis",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\",
+      "BasePath": "_content/JuanYunis",
+      "RelativePath": "templates/ResetPassword.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\templates\\ResetPassword.html"
     }
   ]
 }
