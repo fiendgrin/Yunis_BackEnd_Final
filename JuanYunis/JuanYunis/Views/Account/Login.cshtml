@@ -45,9 +45,9 @@
                                 <div class="single-input-item">
                                     <div class="login-reg-form-meta d-flex align-items-center justify-content-between">
                                         <div class="remember-meta">
-                                            <div class="custom-control custom-checkbox">
-                                                <input asp-for="RememberMe" class="custom-control-input" >
-                                                <label class="custom-control-label" for="rememberMe">Remember Me</label>
+                                            <div class="d-flex align-items-center">
+                                                <input style="width:15px; height:15px" class="mr-2 mb-2" asp-for="RememberMe" >
+                                                <label for="RememberMe">Remember Me</label>
                                             </div>
                                         </div>
                                         <a asp-controller="Account" asp-action="ForgotPassword" class="forget-pwd">Forgot Password?</a>
@@ -68,3 +68,6 @@
     <!-- login register wrapper end -->
 </main>
 <!-- main wrapper end -->
+@section Scripts{
+    @await Html.PartialAsync("_Validation")
+}

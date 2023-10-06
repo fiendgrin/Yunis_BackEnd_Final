@@ -4,6 +4,10 @@ namespace JuanYunis.ViewModels.AccountVMs
 {
     public class RegisterVM
     {
+        [StringLength(255)]
+        public string Name { get; set; }
+        [StringLength(255)]
+        public string SurName { get; set; }
         public string UserName { get; set; }
         [EmailAddress]
         public string Email { get; set; }

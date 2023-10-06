@@ -36,6 +36,14 @@
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <form  method="post">
                                 <div class="single-input-item">
+                                    <input asp-for="Name" placeholder="Name" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                                <div class="single-input-item">
+                                    <input asp-for="SurName" placeholder="Surname" />
+                                    <span asp-validation-for="SurName" class="text-danger"></span>
+                                </div>
+                                <div class="single-input-item">
                                     <input asp-for="UserName" placeholder="UserName"  />
                                     <span asp-validation-for="UserName" class="text-danger"></span>
                                 </div>

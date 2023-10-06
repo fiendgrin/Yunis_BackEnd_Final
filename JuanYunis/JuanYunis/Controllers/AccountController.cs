@@ -3,12 +3,14 @@ using JuanYunis.ViewModels;
 using JuanYunis.ViewModels.AccountVMs;
 using JuanYunis.ViewModels.BasketVMs;
 using MailKit.Net.Smtp;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using Newtonsoft.Json;
+using System.Data;
 
 namespace JuanYunis.Controllers
 {
@@ -46,6 +48,8 @@ namespace JuanYunis.Controllers
 
             AppUser appUser = new AppUser
             {
+                Name = registerVM.Name,
+                SurName = registerVM.SurName,
                 UserName = registerVM.UserName,
                 Email = registerVM.Email,
                 IsActive = true
@@ -117,7 +121,7 @@ namespace JuanYunis.Controllers
 
             IList<string> roles = await _userManager.GetRolesAsync(appUser);
 
-            if (roles.Any(r => r == "Member"))
+            if (!roles.Any(r => r == "Member"))
             {
                 ModelState.AddModelError("", "Email or Password are Incorrect");
                 return View(loginVM);
@@ -167,6 +171,117 @@ namespace JuanYunis.Controllers
             //}
 
             return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> EmailConfirm(string id, string token)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return BadRequest();
+            }
+
+            AppUser appUser = await _userManager.FindByIdAsync(id);
+
+            if (appUser == null)
+            {
+                return NotFound();
+            }
+
+            if (!appUser.IsActive)
+            {
+                return BadRequest();
+            }
+
+            if (appUser.EmailConfirmed)
+            {
+                return Conflict();
+            }
+
+            IdentityResult identityResult = await _userManager.ConfirmEmailAsync(appUser, token);
+
+            if (!identityResult.Succeeded)
+            {
+                foreach (IdentityError error in identityResult.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View(nameof(Login));
+            }
+
+            await _signInManager.SignInAsync(appUser, true);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize(Roles = "Member")]
+        public async Task<IActionResult> Profile()
+        {
+
+            AppUser appUser = await _userManager.Users
+             //.Include(u => u.Addresses.Where(a => a.IsDeleted == false))
+             .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+
+            ProfileVM profileVM = new ProfileVM();
+            //profileVM.Addresses = appUser.Addresses;
+            profileVM.ProfileAcoountVM = new ProfileAccountVM
+            {
+                Name = appUser.Name,
+                SurName = appUser.SurName,
+                UserName = appUser.UserName,
+                Email = appUser.Email
+            };
+            return View(profileVM);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Member")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ProfileAccount(ProfileAccountVM profileAccountVM)
+        {
+            TempData["Tab"] = "Account";
+
+            AppUser appUser = await _userManager.Users
+              //.Include(u => u.Addresses.Where(a => a.IsDeleted == false))
+              .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+
+            ProfileVM profileVM = new ProfileVM();
+            //profileVM.Addresses = appUser.Addresses;
+            profileVM.ProfileAcoountVM = profileAccountVM;
+
+            if (!ModelState.IsValid)
+            {
+                return View("Profile", profileVM);
+            }
+
+
+            if (appUser.NormalizedUserName != profileAccountVM.UserName.Trim().ToUpperInvariant())
+            {
+                appUser.UserName = profileAccountVM.UserName;
+            }
+
+            if (appUser.NormalizedEmail != profileAccountVM.Email.Trim().ToUpperInvariant())
+            {
+                appUser.Email = profileAccountVM.Email;
+            }
+
+            appUser.Name = profileAccountVM.Name;
+            appUser.SurName = profileAccountVM.SurName;
+
+            IdentityResult identityResult = await _userManager.UpdateAsync(appUser);
+
+            if (!identityResult.Succeeded)
+            {
+                foreach (IdentityError identityError in identityResult.Errors)
+                {
+                    ModelState.AddModelError("", identityError.Description);
+
+                }
+                return View("Profile", profileVM);
+            }
+
+            await _signInManager.SignInAsync(appUser, true);
+
+            return RedirectToAction(nameof(Profile));
         }
 
 

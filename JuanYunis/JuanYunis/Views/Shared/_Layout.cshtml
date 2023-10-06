@@ -1,7 +1,14 @@
 ﻿@inject ILayoutService layoutService
+@inject UserManager<AppUser> userManager
 @{
     Dictionary<string, string> settings = await layoutService.GetSettingsAsync();
     List<BasketVM> basketVMs = await layoutService.GetBasketsAsync();
+
+    AppUser? appUser = null;
+    if (User.Identity.IsAuthenticated && User.IsInRole("Member"))
+    {
+        appUser = await userManager.FindByNameAsync(User.Identity.Name);
+    }
 }
 
 <!DOCTYPE html>
@@ -123,10 +130,10 @@
                                             <a href="#">
                                                 <i class="ion-ios-gear-outline"></i>
                                             </a>
-                                            @if (User.Identity.IsAuthenticated && User.IsInRole("Member"))
+                                            @if (appUser != null)
                                             {
                                                 <ul class="dropdown-list">
-                                                    <li><a href="#">my account</a></li>
+                                                    <li><a asp-controller="Account" asp-action="Profile">@appUser.Name @appUser.SurName</a></li>
                                                     <li><a href="login-register.html">check out</a></li>
                                                     <li><a asp-controller="Account" asp-action="Logout">sign out</a></li>
                                                 </ul>
