@@ -2,6 +2,7 @@ using JuanYunis.DataAccessLayer;
 using JuanYunis.Interfaces;
 using JuanYunis.Models;
 using JuanYunis.Services;
+using JuanYunis.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -26,7 +27,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
 }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
-//builder.Services.Configure<SmtpSetting>(builder.Configuration.GetSection("SmtpSetting"));
+builder.Services.Configure<SmtpSetting>(builder.Configuration.GetSection("SmtpSetting"));
 
 builder.Services.AddScoped<ILayoutService, LayoutService>();
 

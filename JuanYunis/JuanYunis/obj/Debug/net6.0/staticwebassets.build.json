@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "rM1NfAE2gVQdVrlYw03fD5P5bsmF/5YG1IWaocMLzr4=",
+  "Hash": "c8iyHiDFrJYbgtZywmQLLqmkTc5iL4V52TVYw5AdCkk=",
   "Source": "JuanYunis",
   "BasePath": "_content/JuanYunis",
   "Mode": "Default",
@@ -33267,6 +33267,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\manage\\vendor\\jquery-easing\\jquery.easing.min.js"
+    },
+    {
+      "Identity": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\templates\\EmailConfirm.html",
+      "SourceId": "JuanYunis",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\",
+      "BasePath": "_content/JuanYunis",
+      "RelativePath": "templates/EmailConfirm.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\templates\\EmailConfirm.html"
     }
   ]
 }

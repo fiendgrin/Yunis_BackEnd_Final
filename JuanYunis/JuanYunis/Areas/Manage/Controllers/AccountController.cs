@@ -1,5 +1,7 @@
 ﻿using JuanYunis.Areas.Manage.ViewModels.AccountVMs;
 using JuanYunis.Models;
+using JuanYunis.ViewModels;
+using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +10,6 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using NuGet.Protocol.Plugins;
 using System.Data;
-using System.Net.Mail;
 
 namespace JuanYunis.Areas.Manage.Controllers
 {
@@ -19,17 +20,17 @@ namespace JuanYunis.Areas.Manage.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IConfiguration _config;
-        //private readonly SmtpSetting _smtpSetting;
+        private readonly SmtpSetting _smtpSetting;
         private readonly IWebHostEnvironment _env;
 
         public AccountController(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager,
-            SignInManager<AppUser> signInManager, IConfiguration config/*, IOptions<SmtpSetting> options*/, IWebHostEnvironment env)
+            SignInManager<AppUser> signInManager, IConfiguration config, IOptions<SmtpSetting> options, IWebHostEnvironment env)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
             _config = config;
-            //_smtpSetting = options.Value;
+            _smtpSetting = options.Value;
             _env = env;
         }
 
@@ -41,6 +42,7 @@ namespace JuanYunis.Areas.Manage.Controllers
         //5.Profile(Get)
         //6.Profile(Post)
         //7.Logout
+        //8.EmailConfirm
         //======================================================================
 
         //1.Register(Get)
@@ -91,31 +93,31 @@ namespace JuanYunis.Areas.Manage.Controllers
 
             await _userManager.AddToRoleAsync(appUser, "Admin");
 
-            //string templateFullPath = Path.Combine(_env.WebRootPath, "templates", "EmailConfirm.html");
-            //string templateContent = await System.IO.File.ReadAllTextAsync(templateFullPath);
+            string templateFullPath = Path.Combine(_env.WebRootPath, "templates", "EmailConfirm.html");
+            string templateContent = await System.IO.File.ReadAllTextAsync(templateFullPath);
 
-            //string token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
-            //string url = Url.Action("EmailConfirm", "Account", new { Id = appUser.Id, token = token }, Request.Scheme, Request.Host.ToString());
+            string token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
+            string url = Url.Action("EmailConfirm", "Account", new { Id = appUser.Id, token = token }, Request.Scheme, Request.Host.ToString());
 
-            //templateContent = templateContent.Replace("{{url}}", url);
+            templateContent = templateContent.Replace("{{url}}", url);
 
-            //MimeMessage mimeMessage = new MimeMessage();
-            //mimeMessage.From.Add(MailboxAddress.Parse(_smtpSetting.Email));
-            //mimeMessage.To.Add(MailboxAddress.Parse(appUser.Email));
-            //mimeMessage.Subject = "Email Confirmation";
-            //mimeMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-            //{
-            //    Text = templateContent
-            //};
+            MimeMessage mimeMessage = new MimeMessage();
+            mimeMessage.From.Add(MailboxAddress.Parse(_smtpSetting.Email));
+            mimeMessage.To.Add(MailboxAddress.Parse(appUser.Email));
+            mimeMessage.Subject = "Email Confirmation";
+            mimeMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = templateContent
+            };
 
-            //using (SmtpClient client = new SmtpClient())
-            //{
-            //    await client.ConnectAsync(_smtpSetting.Host, _smtpSetting.Port, MailKit.Security.SecureSocketOptions.StartTls);
-            //    await client.AuthenticateAsync(_smtpSetting.Email, _smtpSetting.Password);
-            //    await client.SendAsync(mimeMessage);
-            //    await client.DisconnectAsync(true);
-            //}
-            ////zbylaokvrkfsiwsy
+            using (SmtpClient client = new SmtpClient())
+            {
+                await client.ConnectAsync(_smtpSetting.Host, _smtpSetting.Port, MailKit.Security.SecureSocketOptions.StartTls);
+                await client.AuthenticateAsync(_smtpSetting.Email, _smtpSetting.Password);
+                await client.SendAsync(mimeMessage);
+                await client.DisconnectAsync(true);
+            }
+            //lcvtmznjylagoiry
 
             return RedirectToAction(nameof(Login));
         }
@@ -264,6 +266,39 @@ namespace JuanYunis.Areas.Manage.Controllers
             return RedirectToAction(nameof(Login));
         }
 
+
+        //8.EmailConfirm
+        public async Task<IActionResult> EmailConfirm(string id, string token)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return BadRequest();
+            }
+
+            AppUser appUser = await _userManager.FindByIdAsync(id);
+
+            if (appUser == null)
+            {
+                return NotFound();
+            }
+
+
+
+            IdentityResult identityResult = await _userManager.ConfirmEmailAsync(appUser, token);
+
+            if (!identityResult.Succeeded)
+            {
+                foreach (IdentityError error in identityResult.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View(nameof(Login));
+            }
+
+            await _signInManager.SignInAsync(appUser, true);
+
+            return RedirectToAction("Index", "Dashboard", new { area = "manage" });
+        }
 
         #region not used
         //public async Task<IActionResult> SuperAdmin()
