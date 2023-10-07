@@ -1,4 +1,5 @@
-﻿using JuanYunis.Models;
+﻿using JuanYunis.DataAccessLayer;
+using JuanYunis.Models;
 using JuanYunis.ViewModels;
 using JuanYunis.ViewModels.AccountVMs;
 using JuanYunis.ViewModels.BasketVMs;
@@ -16,6 +17,7 @@ namespace JuanYunis.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly AppDbContext _context;
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<AppUser> _signInManager;
@@ -23,9 +25,10 @@ namespace JuanYunis.Controllers
         private readonly SmtpSetting _smtpSetting;
         private readonly IWebHostEnvironment _env;
 
-        public AccountController(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager,
+        public AccountController(AppDbContext context,UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager,
             SignInManager<AppUser> signInManager, IConfiguration config, IOptions<SmtpSetting> options, IWebHostEnvironment env)
         {
+            _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
@@ -173,6 +176,13 @@ namespace JuanYunis.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        //3.Logout
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(Login));
+        }
+
         public async Task<IActionResult> EmailConfirm(string id, string token)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -218,11 +228,11 @@ namespace JuanYunis.Controllers
         {
 
             AppUser appUser = await _userManager.Users
-             //.Include(u => u.Addresses.Where(a => a.IsDeleted == false))
+             .Include(u => u.Addresses.Where(a => a.IsDeleted == false))
              .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
 
             ProfileVM profileVM = new ProfileVM();
-            //profileVM.Addresses = appUser.Addresses;
+            profileVM.Addresses = appUser.Addresses;
             profileVM.ProfileAcoountVM = new ProfileAccountVM
             {
                 Name = appUser.Name,
@@ -241,11 +251,11 @@ namespace JuanYunis.Controllers
             TempData["Tab"] = "Account";
 
             AppUser appUser = await _userManager.Users
-              //.Include(u => u.Addresses.Where(a => a.IsDeleted == false))
+              .Include(u => u.Addresses.Where(a => a.IsDeleted == false))
               .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
 
             ProfileVM profileVM = new ProfileVM();
-            //profileVM.Addresses = appUser.Addresses;
+            profileVM.Addresses = appUser.Addresses;
             profileVM.ProfileAcoountVM = profileAccountVM;
 
             if (!ModelState.IsValid)
@@ -285,11 +295,68 @@ namespace JuanYunis.Controllers
         }
 
 
-        //3.Logout
-        public async Task<IActionResult> Logout()
+       
+
+        [HttpPost]
+        [Authorize(Roles = "Member")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddAddress(Address address)
         {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction(nameof(Login));
+
+            TempData["Tab"] = "Address";
+            AppUser appUser = await _userManager.Users
+             .Include(u => u.Addresses.Where(a => a.IsDeleted == false))
+             .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+
+            ProfileVM profileVM = new ProfileVM();
+            profileVM.ProfileAcoountVM = new ProfileAccountVM
+            {
+                Name = appUser.Name,
+                SurName = appUser.SurName,
+                UserName = appUser.UserName,
+                Email = appUser.Email
+            };
+            profileVM.Addresses = appUser.Addresses;
+
+            if (!ModelState.IsValid)
+            {
+                profileVM.Address = address;
+                TempData["address"] = "true";
+                return View("Profile", profileVM);
+            }
+
+            if (address.isDefault == true)
+            {
+
+                if (appUser.Addresses != null && appUser.Addresses.Count() > 0)
+                {
+                    foreach (Address address1 in appUser.Addresses)
+                    {
+                        address1.isDefault = false;
+                    }
+                }
+
+            }
+            else
+            {
+                if (appUser.Addresses == null || appUser.Addresses.Count() <= 0)
+                {
+
+                    address.isDefault = false;
+
+                }
+            }
+
+            address.UserId = appUser.Id;
+            address.CreatedBy = appUser.Name + " " + appUser.SurName;
+            address.CreatedAt = DateTime.Now;
+
+            await _context.Addresses.AddAsync(address);
+            await _context.SaveChangesAsync();
+
+
+            return RedirectToAction(nameof(Profile));
         }
+
     }
 }
