@@ -1,0 +1,63 @@
+﻿@model Order
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form id="checkOut" method="Post">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="single-input-item">
+                <label asp-for="Name" class="required">First Name</label>
+                <input asp-for="Name" placeholder="First Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="single-input-item">
+                <label asp-for="SurName" class="required">Last Name</label>
+                <input asp-for="SurName" placeholder="Last Name" />
+                <span asp-validation-for="SurName" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="single-input-item">
+        <label asp-for="Email" class="required">Email</label>
+        <input asp-for="Email" placeholder="Email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="single-input-item">
+        <label asp-for="Country" class="required">Countr</label>
+        <input asp-for="Country" placeholder="Country" />
+        <span asp-validation-for="Country" class="text-danger"></span>
+    </div>
+
+    <div class="single-input-item">
+        <label asp-for="Line1" class="required mt-20">Street address</label>
+        <input asp-for="Line1" placeholder="Street address Line 1" />
+        <span asp-validation-for="Line1" class="text-danger"></span>
+    </div>
+
+    <div class="single-input-item">
+        <input asp-for="Line2" placeholder="Street address Line 2 (Optional)" />
+        <span asp-validation-for="Line2" class="text-danger"></span>
+    </div>
+
+    <div class="single-input-item">
+        <label asp-for="Town" class="required">Town / City</label>
+        <input asp-for="Town" placeholder="Town / City" />
+        <span asp-validation-for="Town" class="text-danger"></span>
+    </div>
+
+    <div class="single-input-item">
+        <label asp-for="State">State / Divition</label>
+        <input asp-for="State" placeholder="State / Divition" />
+        <span asp-validation-for="State" class="text-danger"></span>
+    </div>
+
+    <div class="single-input-item">
+        <label asp-for="PostalCode" class="required">Postcode / ZIP</label>
+        <input asp-for="PostalCode" placeholder="Postcode / ZIP" />
+        <span asp-validation-for="PostalCode" class="text-danger"></span>
+    </div>
+    
+</form>

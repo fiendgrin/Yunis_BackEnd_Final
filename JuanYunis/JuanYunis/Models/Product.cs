@@ -28,6 +28,7 @@ namespace JuanYunis.Models
         public Category? Category { get; set; }
         public List<ProductImage>? ProductImages { get; set; }
         public IEnumerable<Basket>? Baskets { get; set; }
+        public IEnumerable<OrderProduct>? OrderProducts { get; set; }
 
         [FileTypes("image/png", "image/jpeg")]
         [MaxFileSize(2)]

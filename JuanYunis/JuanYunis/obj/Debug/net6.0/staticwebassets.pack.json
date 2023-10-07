@@ -385,6 +385,10 @@
       "PackagePath": "staticwebassets\\assets\\img\\testimonial\\tm-3.jpg"
     },
     {
+      "Id": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\assets\\js\\Toastr.js",
+      "PackagePath": "staticwebassets\\assets\\js\\Toastr.js"
+    },
+    {
       "Id": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\assets\\js\\active.js",
       "PackagePath": "staticwebassets\\assets\\js\\active.js"
     },

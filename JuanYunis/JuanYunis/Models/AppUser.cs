@@ -16,5 +16,7 @@ namespace JuanYunis.Models
 
         public IEnumerable<Address>? Addresses { get; set; }
         public IEnumerable<Basket>? Baskets { get; set; }
+        public IEnumerable<Order>? Orders { get; set; }
+
     }
 }

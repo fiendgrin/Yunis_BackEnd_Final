@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
 
+
     //NavBar
     let arr = $('#navBarMenuContent').children();
 

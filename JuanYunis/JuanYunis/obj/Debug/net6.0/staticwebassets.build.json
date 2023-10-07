@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "NnT3byQ7PO0jEZrzLfbcNSKcLPlQ7jqGArZ1stney2Q=",
+  "Hash": "Xg4uyb0PaekeoYImqimWe3oWY4fcsMIAgoyN2r4z9Gk=",
   "Source": "JuanYunis",
   "BasePath": "_content/JuanYunis",
   "Mode": "Default",
@@ -1715,6 +1715,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\js\\plugins.js"
+    },
+    {
+      "Identity": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\assets\\js\\Toastr.js",
+      "SourceId": "JuanYunis",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\",
+      "BasePath": "_content/JuanYunis",
+      "RelativePath": "assets/js/Toastr.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\js\\Toastr.js"
     },
     {
       "Identity": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\assets\\js\\vendor.js",
