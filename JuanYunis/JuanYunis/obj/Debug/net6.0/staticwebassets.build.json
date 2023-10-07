@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "fvlhfJJkVeDuPOrysDqwLiyDbvcGtKqU4GzlnJaI698=",
+  "Hash": "NnT3byQ7PO0jEZrzLfbcNSKcLPlQ7jqGArZ1stney2Q=",
   "Source": "JuanYunis",
   "BasePath": "_content/JuanYunis",
   "Mode": "Default",
@@ -1290,6 +1290,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\img\\product\\product-12.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\assets\\img\\product\\product-2.jpg",
+      "SourceId": "JuanYunis",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\",
+      "BasePath": "_content/JuanYunis",
+      "RelativePath": "assets/img/product/product-2.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\img\\product\\product-2.jpg"
     },
     {
       "Identity": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\assets\\img\\product\\product-3.jpg",

@@ -14,10 +14,12 @@ namespace JuanYunis.Controllers
     public class BasketController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public BasketController(AppDbContext context)
+        public BasketController(AppDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -67,7 +69,45 @@ namespace JuanYunis.Controllers
 
             Response.Cookies.Append("basket", basket);
 
+            if (User.Identity.IsAuthenticated && User.IsInRole("Member"))
+            {
+                AppUser appUser = await _userManager.Users
+                    .Include(b => b.Baskets.Where(b => b.IsDeleted == false))
+                    .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
 
+                if (appUser != null && appUser.Baskets != null && appUser.Baskets.Count() > 0)
+                {
+                    Basket? userBasket = appUser.Baskets.FirstOrDefault(b => b.ProductId == id);
+                    if (userBasket != null)
+                    {
+                        userBasket.Count = basketVMs.FirstOrDefault(b => b.Id == id).Count;
+                    }
+                    else
+                    {
+                        Basket userNewBasket = new Basket
+                        {
+                            UserId = appUser.Id,
+                            ProductId = id,
+                            Count = basketVMs.FirstOrDefault(b => b.Id == id).Count
+                        };
+
+                        await _context.AddAsync(userNewBasket);
+                    }
+
+                }
+                else
+                {
+                    Basket userNewBasket = new Basket
+                    {
+                        UserId = appUser.Id,
+                        ProductId = id,
+                        Count = basketVMs.FirstOrDefault(b => b.Id == id).Count
+                    };
+
+                    await _context.AddAsync(userNewBasket);
+                }
+                await _context.SaveChangesAsync();
+            }
 
             foreach (BasketVM basketVM in basketVMs)
             {
@@ -91,18 +131,41 @@ namespace JuanYunis.Controllers
 
             string? basket = Request.Cookies["basket"];
 
-            List<BasketVM>? ProductsInBasket = JsonConvert.DeserializeObject<List<BasketVM>>(basket);
+            List<BasketVM>? basketVMs = JsonConvert.DeserializeObject<List<BasketVM>>(basket);
 
 
-            if (!ProductsInBasket.Any(p => p.Id == id)) return NotFound("Id Not Found");
+            if (!basketVMs.Any(p => p.Id == id)) return NotFound("Id Not Found");
 
-            ProductsInBasket.RemoveAll(p => p.Id == id);
+            basketVMs.RemoveAll(p => p.Id == id);
 
-            basket = JsonConvert.SerializeObject(ProductsInBasket);
+            basket = JsonConvert.SerializeObject(basketVMs);
 
             Response.Cookies.Append("basket", basket);
 
-            foreach (BasketVM basketVM in ProductsInBasket)
+
+            if (User.Identity.IsAuthenticated && User.IsInRole("Member"))
+            {
+                AppUser appUser = await _userManager.Users
+                    .Include(b => b.Baskets.Where(b => b.IsDeleted == false))
+                    .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+
+                if (appUser != null)
+                {
+                    Basket? userBasket = appUser.Baskets?.FirstOrDefault(b => b.ProductId == id);
+
+
+                    if (userBasket != null)
+                    {
+                        userBasket.DeletedAt = DateTime.Now;
+                        userBasket.IsDeleted = true;
+                        userBasket.DeletedBy = User.Identity.Name;
+                    }
+
+                }
+                await _context.SaveChangesAsync();
+            }
+
+            foreach (BasketVM basketVM in basketVMs)
             {
                 Product product = await _context.Products
                   .Include(p => p.ProductImages.Where(pi => pi.IsDeleted == false && pi.IsMainImage == true))
@@ -114,7 +177,7 @@ namespace JuanYunis.Controllers
 
             }
 
-            return PartialView("_BasketPartial", ProductsInBasket);
+            return PartialView("_BasketPartial", basketVMs);
         }
 
       

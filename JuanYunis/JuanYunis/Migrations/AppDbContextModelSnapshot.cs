@@ -95,7 +95,7 @@ namespace JuanYunis.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("JuanYunis.Models.AppUser", b =>
@@ -174,6 +174,57 @@ namespace JuanYunis.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("JuanYunis.Models.Basket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("date");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("date");
+
+                    b.Property<string>("DeletedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("date");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Baskets");
+                });
+
             modelBuilder.Entity("JuanYunis.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -214,7 +265,7 @@ namespace JuanYunis.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("JuanYunis.Models.Product", b =>
@@ -290,7 +341,7 @@ namespace JuanYunis.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("JuanYunis.Models.ProductImage", b =>
@@ -341,7 +392,7 @@ namespace JuanYunis.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductImages", (string)null);
+                    b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("JuanYunis.Models.Setting", b =>
@@ -364,7 +415,7 @@ namespace JuanYunis.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Settings", (string)null);
+                    b.ToTable("Settings");
                 });
 
             modelBuilder.Entity("JuanYunis.Models.Slider", b =>
@@ -422,7 +473,7 @@ namespace JuanYunis.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sliders", (string)null);
+                    b.ToTable("Sliders");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -567,6 +618,21 @@ namespace JuanYunis.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("JuanYunis.Models.Basket", b =>
+                {
+                    b.HasOne("JuanYunis.Models.Product", "Product")
+                        .WithMany("Baskets")
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("JuanYunis.Models.AppUser", "User")
+                        .WithMany("Baskets")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("JuanYunis.Models.Product", b =>
                 {
                     b.HasOne("JuanYunis.Models.Category", "Category")
@@ -641,6 +707,8 @@ namespace JuanYunis.Migrations
             modelBuilder.Entity("JuanYunis.Models.AppUser", b =>
                 {
                     b.Navigation("Addresses");
+
+                    b.Navigation("Baskets");
                 });
 
             modelBuilder.Entity("JuanYunis.Models.Category", b =>
@@ -650,6 +718,8 @@ namespace JuanYunis.Migrations
 
             modelBuilder.Entity("JuanYunis.Models.Product", b =>
                 {
+                    b.Navigation("Baskets");
+
                     b.Navigation("ProductImages");
                 });
 #pragma warning restore 612, 618

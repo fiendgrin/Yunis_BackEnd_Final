@@ -14,7 +14,7 @@ namespace JuanYunis.Models
         [StringLength(255)]
         public string? SurName { get; set; }
 
-
         public IEnumerable<Address>? Addresses { get; set; }
+        public IEnumerable<Basket>? Baskets { get; set; }
     }
 }
