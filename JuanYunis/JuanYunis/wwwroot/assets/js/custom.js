@@ -165,10 +165,7 @@
         $('.addAddressBtn').addClass('d-none');
         $('.addressContainer').removeClass('d-flex');
         $('.addressContainer').addClass('d-none');
-       
         $('.goBackBtn').removeClass('d-none');
-        $('.billingh3').removeClass('d-none');
-        $('.accounth3').addClass('d-none');
 
 
 
@@ -180,9 +177,23 @@
         $('.addAddressBtn').removeClass('d-none');
         $('.addressContainer').removeClass('d-none');
         $('.addressContainer').addClass('d-flex');
-        $('.accounth3').removeClass('d-none');
-        $('.billingh3').addClass('d-none');
         $('.goBackBtn').addClass('d-none');
+        $('.editAddressForm').addClass('d-none');
     });
+
+    $('.editAddressBtn').click(function (e) {
+        e.preventDefault();
+        $('.addressContainer').removeClass('d-flex');
+        $('.addressContainer').addClass('d-none');
+        $('.goBackBtn').removeClass('d-none');
+        $('.addAddressBtn').addClass('d-none');
+        $('.editAddressForm').removeClass('d-none');
+        let url = $(this).attr('href');
+        fetch(url)
+            .then(res => res.text())
+            .then(data => {
+                $('.editAddressForm').html(data)
+            })
+    })
 
 })

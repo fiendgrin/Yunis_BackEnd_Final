@@ -295,8 +295,6 @@ namespace JuanYunis.Controllers
         }
 
 
-       
-
         [HttpPost]
         [Authorize(Roles = "Member")]
         [ValidateAntiForgeryToken]
@@ -354,6 +352,92 @@ namespace JuanYunis.Controllers
             await _context.Addresses.AddAsync(address);
             await _context.SaveChangesAsync();
 
+
+            return RedirectToAction(nameof(Profile));
+        }
+
+        [Authorize(Roles = "Member")]
+        public async Task<IActionResult> EditAddress(int? id)
+        {
+            AppUser appUser = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            Address address = await _context.Addresses.FirstOrDefaultAsync(a => a.IsDeleted == false && a.Id == id && a.UserId == appUser.Id);
+
+            if (address == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("_EditAddressPartial",address);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Member")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditAddress(Address address)
+        {
+
+            TempData["Tab"] = "Address";
+            AppUser appUser = await _userManager.Users
+             .Include(u => u.Addresses.Where(a => a.IsDeleted == false))
+             .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+
+            ProfileVM profileVM = new ProfileVM();
+            profileVM.ProfileAcoountVM = new ProfileAccountVM
+            {
+                Name = appUser.Name,
+                SurName = appUser.SurName,
+                UserName = appUser.UserName,
+                Email = appUser.Email
+            };
+            profileVM.Addresses = appUser.Addresses;
+
+            if (!ModelState.IsValid)
+            {
+                profileVM.Address = address;
+                TempData["EditAddress"] = "true";
+                return View("Profile", profileVM);
+            }
+
+            Address dbAddress = appUser.Addresses.FirstOrDefault(a => a.Id == address.Id);
+
+            if (address.isDefault == true)
+            {
+
+                if (appUser.Addresses != null && appUser.Addresses.Count() > 0)
+                {
+                    foreach (Address address1 in appUser.Addresses)
+                    {
+                        address1.isDefault = false;
+                    }
+                }
+
+                dbAddress.isDefault = true;
+
+            }
+            else
+            {
+                if (appUser.Addresses == null || appUser.Addresses.Count() <= 0)
+                {
+
+                    address.isDefault = false;
+
+                }
+            }
+
+            dbAddress.Line1 = address.Line1;
+            dbAddress.Line2 = address.Line2;
+            dbAddress.Country = address.Country;
+            dbAddress.Town = address.Town;
+            dbAddress.State = address.State;
+            dbAddress.PostalCode = address.PostalCode;
+
+            await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Profile));
         }
