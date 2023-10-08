@@ -29,6 +29,8 @@
     <link href="~/assets/css/vendor.css" rel="stylesheet">
     <!--=== Main Style CSS ===-->
     <link href="~/assets/css/style.css" rel="stylesheet">
+    <link href="~/assets/css/table.css" rel="stylesheet">
+
     <!-- Modernizer JS -->
     <script src="~/assets/js/modernizr-2.8.3.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
@@ -42,7 +44,11 @@
 <body>
     @if (TempData["Info"] != null)
     {
-        <input type="hidden" value="@TempData["Info"].ToString()" id="infToaster" />
+        <input type="hidden" value="@TempData["Info"].ToString()" id="infoToaster" />
+    }
+    @if (TempData["Success"] != null)
+    {
+        <input type="hidden" value="@TempData["Success"].ToString()" id="successToaster" />
     }
     <!-- Start Header Area -->
     <header class="header-area">
@@ -138,7 +144,7 @@
                                             {
                                                 <ul class="dropdown-list">
                                                     <li><a asp-controller="Account" asp-action="Profile">@appUser.Name @appUser.SurName</a></li>
-                                                    <li><a href="login-register.html">check out</a></li>
+                                                    <li><a asp-controller="Order" asp-action="Profile">check out</a></li>
                                                     <li><a asp-controller="Account" asp-action="Logout">sign out</a></li>
                                                 </ul>
                                             }
@@ -560,6 +566,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script src="~/assets/js/custom.js"></script>
         <script src="~/assets/js/Toastr.js"></script>
+        <script src="~/assets/js/plainCustom.js"></script>
+
 
 </body>
 

@@ -1,7 +1,7 @@
 ﻿$(document).ready(function ()
 {
 
-  /*  toastr["info"]("Select Products before checking Out")*/
+    /*toastr["info"]("Select Products before checking Out")*/
 
     toastr.options = {
         "closeButton": false,
@@ -21,9 +21,16 @@
         "hideMethod": "fadeOut"
     }
 
-
-    let input = $('#infToaster').val();
-    if (input.length > 0) {
-        toastr["info"](input)
+    let infoToaster = $('#infoToaster');
+    console.log(infoToaster)
+    if (infoToaster.val() != undefined && infoToaster.val().length > 0) {
+        toastr["info"](infoToaster.val());
     }
+
+    let successToaster = $('#successToaster');
+    console.log(successToaster.val())
+    if (successToaster.val() != undefined && successToaster.val().length > 0) {
+        toastr["success"](successToaster.val());
+    }
+
 })

@@ -229,6 +229,8 @@ namespace JuanYunis.Controllers
 
             AppUser appUser = await _userManager.Users
              .Include(u => u.Addresses.Where(a => a.IsDeleted == false))
+             .Include(u=>u.Orders.Where(o=>o.IsDeleted == false))
+             .ThenInclude(o=>o.OrderProducts.Where(op=>op.IsDeleted==false))
              .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
 
             ProfileVM profileVM = new ProfileVM();
@@ -240,6 +242,8 @@ namespace JuanYunis.Controllers
                 UserName = appUser.UserName,
                 Email = appUser.Email
             };
+            profileVM.Orders = appUser.Orders;
+
             return View(profileVM);
         }
 

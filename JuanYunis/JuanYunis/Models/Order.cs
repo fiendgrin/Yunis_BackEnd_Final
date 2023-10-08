@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using JuanYunis.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace JuanYunis.Models
 {
     public class Order : BaseEntity
     {
         public int No { get; set; }
-        public int Status { get; set; }
+        public OrderStatus Status { get; set; }
         [StringLength(255)]
         public string? Comment { get; set; }
         [StringLength(255)]

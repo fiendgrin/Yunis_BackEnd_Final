@@ -71,42 +71,61 @@
                                     <div class="tab-pane fade @(isOrder?"show active":"")" id="orders" role="tabpanel">
                                         <div class="myaccount-content">
                                             <h3>Orders</h3>
-                                            <div class="myaccount-table table-responsive text-center">
-                                                <table class="table table-bordered">
-                                                    <thead class="thead-light">
-                                                        <tr>
-                                                            <th>Order</th>
-                                                            <th>Date</th>
-                                                            <th>Status</th>
-                                                            <th>Total</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
+                                            <table class="fold-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Orderer Name</th>
+                                                        <th>Order no</th>
+                                                        <th>Amount</th>
+                                                        <th>Value</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                @foreach (Order order in Model.Orders)
+                                                {
                                                     <tbody>
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>Aug 22, 2018</td>
-                                                            <td>Pending</td>
-                                                            <td>$3000</td>
-                                                            <td><a href="cart.html" class="btn ">View</a></td>
+                                                        <tr class="view">
+                                                            <td>@order.Name @order.SurName</td>
+                                                            <td>@order.No</td>
+                                                            <td>@order.OrderProducts.Count()</td>
+                                                            <td class="cur">@order.OrderProducts.Sum(op=>op.Count*(op.Price + op.EcoTax))</td>
+                                                            <td>@order.Status</td>
+
                                                         </tr>
-                                                        <tr>
-                                                            <td>2</td>
-                                                            <td>July 22, 2018</td>
-                                                            <td>Approved</td>
-                                                            <td>$200</td>
-                                                            <td><a href="cart.html" class="btn ">View</a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>3</td>
-                                                            <td>June 12, 2017</td>
-                                                            <td>On Hold</td>
-                                                            <td>$990</td>
-                                                            <td><a href="cart.html" class="btn ">View</a></td>
+                                                        <tr class="fold">
+                                                            <td colspan="7">
+                                                                <div class="fold-content">
+                                                                    <table>
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Name</th>
+                                                                                <th>Count</th>
+                                                                                <th>Price</th>
+                                                                                <th>Tax</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            @foreach (OrderProduct orderProduct in order.OrderProducts)
+                                                                            {
+                                                                                <tr>
+                                                                                    <td>@orderProduct.Title</td>
+                                                                                    <td>@orderProduct.Count</td>
+                                                                                    <td class="cur">
+                                                                                        @orderProduct.Price
+                                                                                    </td>
+                                                                                    <td class="cur">
+                                                                                        @orderProduct.EcoTax
+                                                                                    </td>
+                                                                                </tr>
+                                                                            }
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </td>
                                                         </tr>
                                                     </tbody>
-                                                </table>
-                                            </div>
+                                                }
+                                            </table>
                                         </div>
                                     </div>
                                     <!-- Single Tab Content End -->
@@ -117,15 +136,15 @@
 
                                             <a href="#" class="btn sqr-btn text-monospace mb-4 addAddressBtn @( AddressError || editAddressError ? "d-none":"")"><i class="fa fa-edit"></i> Add Address</a>
 
-                                          
-                                           
+
+
                                             <div class="addressForm @(AddressError? "":"d-none")">
                                                 @await Html.PartialAsync("_AddressPartial", Model.Address)
                                             </div>
-                                            
+
                                             <h3 class="addressContainer @(AddressError || editAddressError? "d-none":"")">Billing Address</h3>
                                             <div class="addressContainer @(AddressError || editAddressError? "d-none":"")">
-                                                
+
                                                 <div style="column-gap:80px; row-gap:30px" class=" d-flex flex-wrap">
                                                     @foreach (Address address in Model.Addresses.OrderByDescending(a => a.isDefault))
                                                     {

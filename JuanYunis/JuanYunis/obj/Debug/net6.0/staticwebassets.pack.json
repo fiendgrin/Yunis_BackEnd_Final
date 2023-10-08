@@ -33,6 +33,10 @@
       "PackagePath": "staticwebassets\\assets\\css\\style.css"
     },
     {
+      "Id": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\assets\\css\\table.css",
+      "PackagePath": "staticwebassets\\assets\\css\\table.css"
+    },
+    {
       "Id": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\assets\\css\\vendor.css",
       "PackagePath": "staticwebassets\\assets\\css\\vendor.css"
     },
@@ -399,6 +403,10 @@
     {
       "Id": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\assets\\js\\modernizr-2.8.3.min.js",
       "PackagePath": "staticwebassets\\assets\\js\\modernizr-2.8.3.min.js"
+    },
+    {
+      "Id": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\assets\\js\\plainCustom.js",
+      "PackagePath": "staticwebassets\\assets\\js\\plainCustom.js"
     },
     {
       "Id": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\assets\\js\\plugins.js",

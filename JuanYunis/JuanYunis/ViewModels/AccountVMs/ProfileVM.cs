@@ -7,6 +7,7 @@ namespace JuanYunis.ViewModels.AccountVMs
         public ProfileAccountVM ProfileAcoountVM { get; set; }
 
         public IEnumerable<Address> Addresses { get; set; }
+        public IEnumerable<Order> Orders { get; set; }
 
         public Address Address { get; set; }
     }
