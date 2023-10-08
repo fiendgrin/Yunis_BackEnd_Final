@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace JuanYunis.Areas.Manage.Controllers
 {
     [Area("manage")]
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin, Admin")]
     public class DashboardController : Controller
     {
         public IActionResult Index()

@@ -79,6 +79,8 @@
                                                         <th>Amount</th>
                                                         <th>Value</th>
                                                         <th>Status</th>
+                                                        <th>Comment</th>
+
                                                     </tr>
                                                 </thead>
                                                 @foreach (Order order in Model.Orders)
@@ -90,6 +92,7 @@
                                                             <td>@order.OrderProducts.Count()</td>
                                                             <td class="cur">@order.OrderProducts.Sum(op=>op.Count*(op.Price + op.EcoTax))</td>
                                                             <td>@order.Status</td>
+                                                            <td>@order.Comment</td>
 
                                                         </tr>
                                                         <tr class="fold">

@@ -11,7 +11,7 @@ using System.Drawing.Drawing2D;
 namespace JuanYunis.Areas.Manage.Controllers
 {
     [Area("manage")]
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin, Admin")]
     public class ProductController : Controller
     {
         private readonly AppDbContext _context;

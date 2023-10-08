@@ -1,0 +1,105 @@
+﻿@model Order
+@{
+    ViewData["Title"] = "Order Deatail";
+    int no = 0;
+}
+
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Order Deatail</h1>
+
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+
+      
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Order №:</th>
+                        <th>Status:</th>
+                        <th>User:</th>
+                        <th>Comment:</th>
+                        <th>Name:</th>
+                        <th>SurName:</th>
+                        <th>Country:</th>
+                        <th>Town:</th>
+                        <th>State:</th>
+                        <th>Postal Code:</th>
+                        <th>Address(Line 1):</th>
+                        <th>Address(Line 2):</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model.No</td>
+                        <td>@Model.Status</td>
+                        <td>@Model.User?.Name @Model.User?.SurName</td>
+                        <td>@Model.Comment</td>
+                        <td>@Model.Name</td>
+                        <td>@Model.SurName</td>
+                        <td>@Model.Country</td>
+                        <td>@Model.Town</td>
+                        <td>@Model.State</td>
+                        <td>@Model.PostalCode</td>
+                        <td>@Model.Line1</td>
+                        <td>@Model.Line2</td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+       
+    </div>
+
+ 
+
+  
+    @if (Model.OrderProducts != null && Model.OrderProducts.Count() > 0)
+    {
+        <div class="col-lg-12">
+            <h1 class="h4 mt-3 mb-1 text-light-400">Order Products</h1>
+        </div>
+        <div class="col-lg-12 mt-0">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th>Count</th>
+                        <th>Tax</th>
+                        <th>Total</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (OrderProduct orderProduct in Model.OrderProducts)
+                    {
+                        no++;
+                        <tr>
+                            <td>@no</td>
+                            <td>@orderProduct.Title</td>
+                            <td>@orderProduct.Price</td>
+                            <td>@orderProduct.Count</td>
+                            <td>@orderProduct.EcoTax</td>
+                            <td>@(orderProduct.Count * (orderProduct.Price + orderProduct.EcoTax))</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    <div class="col-lg-6 mt-3 mb-3">
+        <div class=" p-3 border border-light bg-gradient-light">
+            @await Html.PartialAsync("_OrderStatusPartial",new OrderVM{Id=Model.Id,UserId = Model.UserId, Comment = Model.Comment,Status = Model.Status})
+            
+        </div>
+    </div>
+    
+    <div class="mt-3 col-lg-12">
+        <a asp-area="manage" asp-controller="Order" asp-action="Index" class="btn btn-primary">Go Home</a>
+    </div>
+</div>
