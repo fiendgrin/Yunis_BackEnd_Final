@@ -21,7 +21,7 @@
             } else if (window.location.pathname.toLowerCase() == "/contact" && path.toLowerCase() == "/contact us") {
                 $(arr[i]).addClass('active');
             }
-           
+
 
         }
     });
@@ -29,7 +29,7 @@
 
     //Search
     $('#searchInput').keyup(function () {
-      
+
         if ($(this).val().trim().length == 0) {
             $('#searchBody').html('');
         }
@@ -37,17 +37,17 @@
 
     $('#searchBtn').click(function (e) {
         e.preventDefault();
-      
+
 
         let search = $('#searchInput').val().trim();
         let searchUrl = 'product/search?search=' + search;
-     
+
 
         if (search.length > 2) {
             fetch(searchUrl)
                 .then(res => res.text())
                 .then(data => {
-                   
+
                     $('#searchBody').html(data);
                 });
         }
@@ -89,9 +89,10 @@
     //addToCart
 
 
+
     $(document).on('click', '.removeFromBasket, .removeFromCart', function (e) {
         e.preventDefault();
-      
+
         let urlArr = $(this).attr('href').split('/');
         let Id = urlArr[urlArr.length - 1]
         let basketUrl = '/Basket/RemoveBasket/' + Id
@@ -116,91 +117,114 @@
 
 
     });
-    $(document).on('click', '.addBasket, .removeFromBasket ', function (e) {
+    $(document).on('click', '.addBasket, .removeFromBasket', async function (e) {
         e.preventDefault();
         let url = $(this).attr('href');
-          
-        fetch(url)
+        console.log(url)
+        let url1 = "Basket/GetBasketInfo" 
+ 
+            let response = await fetch(url);
+            let data = await response.text();
+            $('.minicart-content-box').html(data);
+        
+
+            response = await fetch(url1);
+            let data1 = await response.text();
+            console.log(data1);
+            $('.basketCount').html(data1);
+       
+
+});
+
+//LoadMore
+$(document).on('click', '.loadMoreBtn', function (e) {
+    e.preventDefault();
+    let url = $(this).attr('href');
+    console.log(url);
+    let pageIndex = $(this).data('pageindex');
+    console.log(pageIndex);
+
+    let totalPage = $(this).data('maxpage');
+    console.log(totalPage);
+
+    if (pageIndex > 0 && (pageIndex + 1) < totalPage) {
+        fetch(url + '?pageIndex=' + pageIndex)
             .then(res => res.text())
             .then(data => {
-                $('.minicart-content-box').html(data)
+                $('.productContainer').append(data)
             });
-          
-      
-    });
-
-    //LoadMore
-    $(document).on('click', '.loadMoreBtn', function (e) {
-        e.preventDefault();
-        let url = $(this).attr('href');
-        console.log(url);
-        let pageIndex = $(this).data('pageindex');
-        console.log(pageIndex);
-
-        let totalPage = $(this).data('maxpage');
-        console.log(totalPage);
-
-        if (pageIndex > 0 && (pageIndex + 1) < totalPage) {
-            fetch(url + '?pageIndex=' + pageIndex)
-                .then(res => res.text())
-                .then(data => {
-                    $('.productContainer').append(data)
-                });
-        } else if (pageIndex == (totalPage - 1)) {
-            fetch(url + '?pageIndex=' + pageIndex)
-                .then(res => res.text())
-                .then(data => {
-                    $('.productContainer').append(data)
-                });
-            $('.loadMoreBtn').remove();
-        }
-        pageIndex++;
-        $('.loadMoreBtn').data("pageindex", pageIndex)
-    });
-
-
-
-    $('.addAddressBtn').click(function (e) {
-        e.preventDefault();
-        $('.addressForm').removeClass('d-none');
-        $('.addAddressBtn').addClass('d-none');
-        $('.addressContainer').removeClass('d-flex');
-        $('.addressContainer').addClass('d-none');
-        $('.goBackBtn').removeClass('d-none');
-
-
-
-    });
-
-    $('.goBackBtn').click(function (e) {
-        e.preventDefault();
-        $('.addressForm').addClass('d-none');
-        $('.addAddressBtn').removeClass('d-none');
-        $('.addressContainer').removeClass('d-none');
-        $('.addressContainer').addClass('d-flex');
-        $('.goBackBtn').addClass('d-none');
-        $('.editAddressForm').addClass('d-none');
-    });
-
-    $('.editAddressBtn').click(function (e) {
-        e.preventDefault();
-        $('.addressContainer').removeClass('d-flex');
-        $('.addressContainer').addClass('d-none');
-        $('.goBackBtn').removeClass('d-none');
-        $('.addAddressBtn').addClass('d-none');
-        $('.editAddressForm').removeClass('d-none');
-        let url = $(this).attr('href');
-        fetch(url)
+    } else if (pageIndex == (totalPage - 1)) {
+        fetch(url + '?pageIndex=' + pageIndex)
             .then(res => res.text())
             .then(data => {
-                $('.editAddressForm').html(data)
-            })
-    })
+                $('.productContainer').append(data)
+            });
+        $('.loadMoreBtn').remove();
+    }
+    pageIndex++;
+    $('.loadMoreBtn').data("pageindex", pageIndex)
+});
 
-    $(function () {
-        $(".fold-table tr.view").on("click", function () {
-            $(this).toggleClass("open").next(".fold").toggleClass("open");
-        });
+
+
+$('.addAddressBtn').click(function (e) {
+    e.preventDefault();
+    $('.addressForm').removeClass('d-none');
+    $('.addAddressBtn').addClass('d-none');
+    $('.addressContainer').removeClass('d-flex');
+    $('.addressContainer').addClass('d-none');
+    $('.goBackBtn').removeClass('d-none');
+
+
+
+});
+
+$('.goBackBtn').click(function (e) {
+    e.preventDefault();
+    $('.addressForm').addClass('d-none');
+    $('.addAddressBtn').removeClass('d-none');
+    $('.addressContainer').removeClass('d-none');
+    $('.addressContainer').addClass('d-flex');
+    $('.goBackBtn').addClass('d-none');
+    $('.editAddressForm').addClass('d-none');
+});
+
+$('.editAddressBtn').click(function (e) {
+    e.preventDefault();
+    $('.addressContainer').removeClass('d-flex');
+    $('.addressContainer').addClass('d-none');
+    $('.goBackBtn').removeClass('d-none');
+    $('.addAddressBtn').addClass('d-none');
+    $('.editAddressForm').removeClass('d-none');
+    let url = $(this).attr('href');
+    fetch(url)
+        .then(res => res.text())
+        .then(data => {
+            $('.editAddressForm').html(data)
+        })
+})
+
+$(function () {
+    $(".fold-table tr.view").on("click", function () {
+        $(this).toggleClass("open").next(".fold").toggleClass("open");
     });
+});
+
+// prodct details slider active
+$('.product-large-slider').slick({
+    fade: true,
+    arrows: false,
+    asNavFor: '.pro-nav'
+});
+
+
+// product details slider nav active
+$('.pro-nav').slick({
+    slidesToShow: 4,
+    asNavFor: '.product-large-slider',
+    arrows: false,
+    focusOnSelect: true
+});
+
 
 })

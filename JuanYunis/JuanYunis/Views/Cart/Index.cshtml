@@ -4,7 +4,7 @@
 }
 <main>
     <!-- breadcrumb area start -->
-    <div class="breadcrumb-area bg-img" data-bg="assets/img/banner/breadcrumb-banner.jpg">
+    <div class="breadcrumb-area bg-img" >
         <div class="container">
             <div class="row">
                 <div class="col-12">
@@ -12,7 +12,7 @@
                         <nav aria-label="breadcrumb">
                             <h1 class="breadcrumb-title">Cart</h1>
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Cart</li>
                             </ul>
                         </nav>
@@ -73,7 +73,10 @@
                                     </table>
                                 </div>
                             </div>
-                            <a href="checkout.html" class="btn d-block">Proceed Checkout</a>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a asp-controller="Order" asp-action="CheckOut" class="btn d-block">Proceed Checkout</a>
+                            }
                         </div>
                     </div>
                 </div>

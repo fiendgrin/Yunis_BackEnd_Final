@@ -3,11 +3,11 @@
 @foreach (BasketVM basketVM in Model)
 {
     <tr>
-        <td class="pro-thumbnail"><a href="#"><img class="img-fluid" src="assets/img/product/@basketVM.Image" alt="Product" /></a></td>
-        <td class="pro-title"><a href="#">@basketVM.Title</a></td>
+        <td class="pro-thumbnail"><a><img class="img-fluid" src="assets/img/product/@basketVM.Image" alt="Product" /></a></td>
+        <td class="pro-title"><a>@basketVM.Title</a></td>
         <td class="pro-price"><span>$@(basketVM.Price + basketVM.EcoTax)</span></td>
         <td class="pro-quantity">
-            <div class="pro-qty"><input type="text" value="@basketVM.Count"></div>
+            <span>@basketVM.Count</span>
         </td>
         <td class="pro-subtotal"><span>$@((basketVM.Price + basketVM.EcoTax) * basketVM.Count)</span></td>
         <td class="pro-remove"><a class="removeFromCart" asp-controller="Cart" asp-action="RemoveCart" asp-route-id="@basketVM.Id"><i class="fa fa-trash-o"></i></a></td>

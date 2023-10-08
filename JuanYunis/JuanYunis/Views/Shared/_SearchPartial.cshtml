@@ -1,10 +1,13 @@
 ﻿@model IEnumerable<Product>
 
-@foreach( Product product in Model)
+@foreach (Product product in Model)
 {
-    <div class="d-flex justify-content-between border-bottom border-secondary">
-        <img src="~/assets/img/product/@product.ProductImages.FirstOrDefault(p=>p.IsMainImage==true).Image" style="width:100px; border-radius:5px;" class="border" src="~/assets/img/product/product-1.jpg" />
-        <span class="text-black-50"> @product.Title</span>
-        <span>@product.Price</span>
-    </div>
+    <a asp-controller="Product" asp-action="Detail" asp-route-id="@product.Id">
+        <div class="d-flex justify-content-between border-bottom border-secondary">
+            <img src="~/assets/img/product/@product.ProductImages.FirstOrDefault(p=>p.IsMainImage==true).Image" style="width:100px; border-radius:5px;" class="border" />
+            <span class="text-black-50"> @product.Title</span>
+            <span>@product.Price</span>
+        </div>
+    </a>
+
 }

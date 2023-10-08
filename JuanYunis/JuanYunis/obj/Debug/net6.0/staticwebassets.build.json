@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "HkU1jio3guWoU/RYMpmhw1bFNhE0KPk0mGsrriTdURk=",
+  "Hash": "A9dvzp+B4vWTiaBPlHT1sZCJM0beqcixMrJ90NUtrlo=",
   "Source": "JuanYunis",
   "BasePath": "_content/JuanYunis",
   "Mode": "Default",
@@ -1190,23 +1190,6 @@
       "OriginalItemSpec": "wwwroot\\assets\\img\\product\\20231005105708035.jpg"
     },
     {
-      "Identity": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\assets\\img\\product\\20231005105854075.jpg",
-      "SourceId": "JuanYunis",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\",
-      "BasePath": "_content/JuanYunis",
-      "RelativePath": "assets/img/product/20231005105854075.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\assets\\img\\product\\20231005105854075.jpg"
-    },
-    {
       "Identity": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\assets\\img\\product\\20231005105854082.jpg",
       "SourceId": "JuanYunis",
       "SourceType": "Discovered",
@@ -1239,6 +1222,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\img\\product\\20231005105854083.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\assets\\img\\product\\20231008172923742.jpg",
+      "SourceId": "JuanYunis",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\",
+      "BasePath": "_content/JuanYunis",
+      "RelativePath": "assets/img/product/20231008172923742.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\img\\product\\20231008172923742.jpg"
     },
     {
       "Identity": "C:\\Users\\yunis\\source\\repos\\JuanYunis\\JuanYunis\\wwwroot\\assets\\img\\product\\product-1.jpg",

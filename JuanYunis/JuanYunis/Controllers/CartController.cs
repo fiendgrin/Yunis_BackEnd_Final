@@ -2,6 +2,7 @@
 using JuanYunis.Models;
 using JuanYunis.Services;
 using JuanYunis.ViewModels.BasketVMs;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -11,10 +12,13 @@ namespace JuanYunis.Controllers
     public class CartController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public CartController(AppDbContext context)
+
+        public CartController(AppDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
@@ -58,6 +62,28 @@ namespace JuanYunis.Controllers
             basket = JsonConvert.SerializeObject(ProductsInCart);
 
             Response.Cookies.Append("basket", basket);
+
+            if (User.Identity.IsAuthenticated && User.IsInRole("Member"))
+            {
+                AppUser appUser = await _userManager.Users
+                    .Include(b => b.Baskets.Where(b => b.IsDeleted == false))
+                    .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+
+                if (appUser != null)
+                {
+                    Basket? userBasket = appUser.Baskets?.FirstOrDefault(b => b.ProductId == id);
+
+
+                    if (userBasket != null)
+                    {
+                        userBasket.DeletedAt = DateTime.Now;
+                        userBasket.IsDeleted = true;
+                        userBasket.DeletedBy = User.Identity.Name;
+                    }
+
+                }
+                await _context.SaveChangesAsync();
+            }
 
             foreach (BasketVM basketVM in ProductsInCart)
             {

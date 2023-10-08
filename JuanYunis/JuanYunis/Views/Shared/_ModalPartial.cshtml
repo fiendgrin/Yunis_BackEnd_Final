@@ -40,10 +40,7 @@
                 </div>
                 <p>@Model.SmallDescription</p>
                 <div class="quantity-cart-box d-flex align-items-center mb-20">
-                    <div class="quantity">
-                        <div class="pro-qty"><span class="dec qtybtn">-</span><input type="text" value="1"><span class="inc qtybtn">+</span></div>
-                    </div>
-                    <a href="cart.html" class="btn btn-default">Add To Cart</a>
+                    <a asp-controller="Basket" asp-action="AddBasket" asp-route-id="@Model.Id" class="btn btn-default addBasket">Add To Cart</a>
                 </div>
                 <div class="availability mb-20">
                     <h5 class="cat-title">Availability:</h5>
@@ -54,13 +51,6 @@
                     {
                         <span class="text-danger">Out Of Stock</span>
                     }
-                </div>
-                <div class="share-icon">
-                    <h5 class="cat-title">Share:</h5>
-                    <a href="#"><i class="fa fa-facebook"></i></a>
-                    <a href="#"><i class="fa fa-twitter"></i></a>
-                    <a href="#"><i class="fa fa-pinterest"></i></a>
-                    <a href="#"><i class="fa fa-google-plus"></i></a>
                 </div>
             </div>
         </div>

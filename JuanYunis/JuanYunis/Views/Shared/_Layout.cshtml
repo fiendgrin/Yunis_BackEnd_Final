@@ -9,6 +9,8 @@
     {
         appUser = await userManager.FindByNameAsync(User.Identity.Name);
     }
+
+
 }
 
 <!DOCTYPE html>
@@ -159,8 +161,10 @@
                                         </li>
                                         <li>
                                             <a href="#" class="minicart-btn">
-                                                <i class="ion-bag"></i>
-                                                <div class="BasketCount notification"></div>
+                                                <i class="ion-bag forCountOnly"></i>
+                                                <div class="basketCount notification">
+                                                    @await Html.PartialAsync("_BasketInfoPartial",basketVMs.Count)
+                                                </div>
                                             </a>
                                         </li>
                                     </ul>
@@ -531,6 +535,7 @@
 
             </div>
         </div>
+    </div>
         <!-- offcanvas search form end -->
         <!-- offcanvas mini cart start -->
         <div class="offcanvas-minicart-wrapper">
@@ -548,25 +553,25 @@
         </div>
 
 
-        <!-- offcanvas mini cart end -->
-        <!-- Scroll to top start -->
-        <div class="scroll-top not-visible">
-            <i class="fa fa-angle-up"></i>
-        </div>
-        <!-- Scroll to Top End -->
-        <!--=======================Javascript============================-->
-        @RenderSection("Scripts",false)
-        <!--=== All Vendor Js ===-->
-        <script src="~/assets/js/vendor.js"></script>
-        <!--=== All Plugins Js ===-->
-        <script src="~/assets/js/plugins.js"></script>
-        <!--=== Active Js ===-->
-        <script src="~/assets/js/active.js"></script>
-        <!--=== Custom Js ===-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-        <script src="~/assets/js/custom.js"></script>
-        <script src="~/assets/js/Toastr.js"></script>
-        <script src="~/assets/js/plainCustom.js"></script>
+    <!-- offcanvas mini cart end -->
+    <!-- Scroll to top start -->
+    <div class="scroll-top not-visible">
+        <i class="fa fa-angle-up"></i>
+    </div>
+    <!-- Scroll to Top End -->
+    <!--=======================Javascript============================-->
+    @RenderSection("Scripts",false)
+    <!--=== All Vendor Js ===-->
+    <script src="~/assets/js/vendor.js"></script>
+    <!--=== All Plugins Js ===-->
+    <script src="~/assets/js/plugins.js"></script>
+    <!--=== Active Js ===-->
+    <script src="~/assets/js/active.js"></script>
+    <!--=== Custom Js ===-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="~/assets/js/custom.js"></script>
+    <script src="~/assets/js/Toastr.js"></script>
+    <script src="~/assets/js/plainCustom.js"></script>
 
 
 </body>

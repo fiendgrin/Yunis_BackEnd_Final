@@ -104,14 +104,26 @@ namespace JuanYunis.Controllers
             if (id == null) return BadRequest("Id is required");
 
             Product product = await _context.Products
-                .Include(p => p.ProductImages.Where(pi => pi.IsDeleted == false && pi.IsMainImage == false)).
+                .Include(p => p.ProductImages.Where(pi => pi.IsDeleted == false)).
                 FirstOrDefaultAsync(p => p.IsDeleted == false && p.Id == id);
 
             if (product == null) return NotFound("This Id does not exist");
 
             return PartialView("_ModalPartial", product);
         }
+        //5.Detail
+        public async Task<IActionResult> Detail(int? id) 
+        {
+            if (id == null) return BadRequest();
 
+            Product? product = await _context.Products
+                .Include(p=>p.ProductImages.Where(pi=>pi.IsDeleted == false))
+                .FirstOrDefaultAsync(p => p.Id == id && p.IsDeleted == false);
+
+            if (product == null) return NotFound();
+
+            return View(product);
+        }
 
     }
 }

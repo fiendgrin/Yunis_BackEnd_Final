@@ -121,7 +121,7 @@ namespace JuanYunis.Controllers
 
             }
 
-
+         
             return PartialView("_BasketPartial", basketVMs);
         }
 
@@ -177,9 +177,20 @@ namespace JuanYunis.Controllers
 
             }
 
+
+           
             return PartialView("_BasketPartial", basketVMs);
         }
 
-      
+        public async Task<IActionResult> GetBasketInfo()
+        {
+
+            
+            string? basket = Request.Cookies["basket"];
+            List<BasketVM>? basketVMs =  JsonConvert.DeserializeObject<List<BasketVM>>(basket);
+
+
+            return Ok(basketVMs == null? 0:basketVMs.Count);
+        }
     }
 }
