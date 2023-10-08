@@ -1,4 +1,5 @@
-﻿using JuanYunis.DataAccessLayer;
+﻿using JuanYunis.Areas.Manage.ViewModels;
+using JuanYunis.DataAccessLayer;
 using JuanYunis.Models;
 using JuanYunis.ViewModels;
 using JuanYunis.ViewModels.AccountVMs;
@@ -444,6 +445,110 @@ namespace JuanYunis.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Profile));
+        }
+
+
+        //9.ForgotPassword(Get)
+        public async Task<IActionResult> ForgotPassword()
+        {
+            return View();
+        }
+        //10.ForgotPassword(Post)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordVM forgotPasswordVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(forgotPasswordVM);
+            }
+
+            AppUser appUser = await _userManager.FindByEmailAsync(forgotPasswordVM.Email);
+            if (appUser == null)
+            {
+                ModelState.AddModelError("Email", "Email is Incorrect");
+                return View(forgotPasswordVM);
+            }
+
+            //if (!appUser.IsActive)
+            //{
+            //    ModelState.AddModelError("Email", "Email is Incorrect");
+            //    return View(forgotPasswordVM);
+            //}
+
+            string token = await _userManager.GeneratePasswordResetTokenAsync(appUser);
+            string templateFullPath = Path.Combine(_env.WebRootPath, "templates", "ResetPassword.html");
+            string templateContent = await System.IO.File.ReadAllTextAsync(templateFullPath);
+            string url = Url.Action("ResetPassword", "Account", new { appUser.Id, token }, Request.Scheme, Request.Host.ToString());
+
+            templateContent = templateContent.Replace("{{action_url}}", url);
+            templateContent = templateContent.Replace("{{name}}", appUser.Name);
+
+            MimeMessage mimeMessage = new MimeMessage();
+            mimeMessage.From.Add(MailboxAddress.Parse(_smtpSetting.Email));
+            mimeMessage.To.Add(MailboxAddress.Parse(appUser.Email));
+            mimeMessage.Subject = "Reset  Password";
+            mimeMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = templateContent
+            };
+
+            using (SmtpClient client = new SmtpClient())
+            {
+                await client.ConnectAsync(_smtpSetting.Host, _smtpSetting.Port, MailKit.Security.SecureSocketOptions.StartTls);
+                await client.AuthenticateAsync(_smtpSetting.Email, _smtpSetting.Password);
+                await client.SendAsync(mimeMessage);
+                await client.DisconnectAsync(true);
+            }
+
+            return RedirectToAction(nameof(Login));
+        }
+
+        //11.ResetPassword(Get)
+        public async Task<IActionResult> ResetPassword()
+        {
+            return View();
+        }
+
+        //12.ResetPassword(Post)
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(string id, string token, ViewModels.ResetPasswordVM resetPasswordVM)
+        {
+            if (!ModelState.IsValid) return View(resetPasswordVM);
+
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                ModelState.AddModelError("", "Id Is Incorrect");
+                return View(resetPasswordVM);
+            }
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                ModelState.AddModelError("", "Token Is Incorrect");
+                return View(resetPasswordVM);
+            }
+
+            AppUser appUser = await _userManager.FindByIdAsync(id);
+
+            if (appUser == null)
+            {
+                ModelState.AddModelError("", "Id Is Incorrect");
+                return View(resetPasswordVM);
+            }
+
+            IdentityResult identityResult = await _userManager.ResetPasswordAsync(appUser, token, resetPasswordVM.Password);
+
+            if (identityResult.Succeeded)
+            {
+                foreach (IdentityError identityError in identityResult.Errors)
+                {
+                    ModelState.AddModelError("", identityError.Description);
+                }
+                return View(resetPasswordVM);
+            }
+
+            return View();
         }
 
     }

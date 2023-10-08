@@ -48,83 +48,85 @@ namespace JuanYunis.Areas.Manage.Controllers
         //10.ForgotPassword(Post)
         //======================================================================
 
-        //1.Register(Get)
-        public async Task<IActionResult> Register() 
-        {
-            return View();
-        }
+        #region Register(Not Used)
+        ////1.Register(Get)
+        //public async Task<IActionResult> Register() 
+        //{
+        //    return View();
+        //}
 
-        //2.Register(Post)
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterVM registerVM)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(registerVM);
-            }
+        ////2.Register(Post)
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Register(RegisterVM registerVM)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(registerVM);
+        //    }
 
-            AppUser appUser = new AppUser
-            {
-                UserName = registerVM.UserName,
-                Email = registerVM.Email,
-                IsActive = true
-            };
+        //    AppUser appUser = new AppUser
+        //    {
+        //        UserName = registerVM.UserName,
+        //        Email = registerVM.Email,
+        //        IsActive = true
+        //    };
 
-            if (await _userManager.Users.AnyAsync(u => u.NormalizedUserName == registerVM.UserName.Trim().ToUpperInvariant()))
-            {
-                ModelState.AddModelError("UserName", $"'{registerVM.UserName}' Already Exists");
-                return View(registerVM);
-            }
+        //    if (await _userManager.Users.AnyAsync(u => u.NormalizedUserName == registerVM.UserName.Trim().ToUpperInvariant()))
+        //    {
+        //        ModelState.AddModelError("UserName", $"'{registerVM.UserName}' Already Exists");
+        //        return View(registerVM);
+        //    }
 
-            if (await _userManager.Users.AnyAsync(u => u.NormalizedEmail == registerVM.Email.Trim().ToUpperInvariant()))
-            {
-                ModelState.AddModelError("Email", $"'{registerVM.Email}' Already Exists");
-                return View(registerVM);
-            }
+        //    if (await _userManager.Users.AnyAsync(u => u.NormalizedEmail == registerVM.Email.Trim().ToUpperInvariant()))
+        //    {
+        //        ModelState.AddModelError("Email", $"'{registerVM.Email}' Already Exists");
+        //        return View(registerVM);
+        //    }
 
-            IdentityResult identityResult = await _userManager.CreateAsync(appUser, registerVM.Password);
+        //    IdentityResult identityResult = await _userManager.CreateAsync(appUser, registerVM.Password);
 
-            if (!identityResult.Succeeded)
-            {
-                foreach (IdentityError identityError in identityResult.Errors)
-                {
-                    ModelState.AddModelError("", identityError.Description);
-                }
-                return View(registerVM);
-            }
+        //    if (!identityResult.Succeeded)
+        //    {
+        //        foreach (IdentityError identityError in identityResult.Errors)
+        //        {
+        //            ModelState.AddModelError("", identityError.Description);
+        //        }
+        //        return View(registerVM);
+        //    }
 
-            await _userManager.AddToRoleAsync(appUser, "Admin");
+        //    await _userManager.AddToRoleAsync(appUser, "Admin");
 
-            string templateFullPath = Path.Combine(_env.WebRootPath, "templates", "EmailConfirm.html");
-            string templateContent = await System.IO.File.ReadAllTextAsync(templateFullPath);
+        //    string templateFullPath = Path.Combine(_env.WebRootPath, "templates", "EmailConfirm.html");
+        //    string templateContent = await System.IO.File.ReadAllTextAsync(templateFullPath);
 
-            string token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
-            string url = Url.Action("EmailConfirm", "Account", new { Id = appUser.Id, token = token }, Request.Scheme, Request.Host.ToString());
+        //    string token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
+        //    string url = Url.Action("EmailConfirm", "Account", new { Id = appUser.Id, token = token }, Request.Scheme, Request.Host.ToString());
 
-            templateContent = templateContent.Replace("{{url}}", url);
+        //    templateContent = templateContent.Replace("{{url}}", url);
 
-            MimeMessage mimeMessage = new MimeMessage();
-            mimeMessage.From.Add(MailboxAddress.Parse(_smtpSetting.Email));
-            mimeMessage.To.Add(MailboxAddress.Parse(appUser.Email));
-            mimeMessage.Subject = "Email Confirmation";
-            mimeMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-            {
-                Text = templateContent
-            };
+        //    MimeMessage mimeMessage = new MimeMessage();
+        //    mimeMessage.From.Add(MailboxAddress.Parse(_smtpSetting.Email));
+        //    mimeMessage.To.Add(MailboxAddress.Parse(appUser.Email));
+        //    mimeMessage.Subject = "Email Confirmation";
+        //    mimeMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+        //    {
+        //        Text = templateContent
+        //    };
 
-            using (SmtpClient client = new SmtpClient())
-            {
-                await client.ConnectAsync(_smtpSetting.Host, _smtpSetting.Port, MailKit.Security.SecureSocketOptions.StartTls);
-                await client.AuthenticateAsync(_smtpSetting.Email, _smtpSetting.Password);
-                await client.SendAsync(mimeMessage);
-                await client.DisconnectAsync(true);
-            }
-            //lcvtmznjylagoiry
+        //    using (SmtpClient client = new SmtpClient())
+        //    {
+        //        await client.ConnectAsync(_smtpSetting.Host, _smtpSetting.Port, MailKit.Security.SecureSocketOptions.StartTls);
+        //        await client.AuthenticateAsync(_smtpSetting.Email, _smtpSetting.Password);
+        //        await client.SendAsync(mimeMessage);
+        //        await client.DisconnectAsync(true);
+        //    }
+        //    //lcvtmznjylagoiry
 
-            return RedirectToAction(nameof(Login));
-        }
+        //    return RedirectToAction(nameof(Login));
+        //}
 
+        #endregion
         //3.Login(Get)
         public async Task<IActionResult> Login()
         {
@@ -303,61 +305,7 @@ namespace JuanYunis.Areas.Manage.Controllers
             return RedirectToAction("Index", "Dashboard", new { area = "manage" });
         }
 
-        //9.ForgotPassword(Get)
-        public async Task<IActionResult> ForgotPassword()
-        {
-            return View();
-        }
-        //10.ForgotPassword(Post)
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordVM forgotPasswordVM)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(forgotPasswordVM);
-            }
-
-            AppUser appUser = await _userManager.FindByEmailAsync(forgotPasswordVM.Email);
-            if (appUser == null)
-            {
-                ModelState.AddModelError("Email", "Email is Incorrect");
-                return View(forgotPasswordVM);
-            }
-
-            //if (!appUser.IsActive)
-            //{
-            //    ModelState.AddModelError("Email", "Email is Incorrect");
-            //    return View(forgotPasswordVM);
-            //}
-
-            string token = await _userManager.GeneratePasswordResetTokenAsync(appUser);
-            string templateFullPath = Path.Combine(_env.WebRootPath, "templates", "ResetPassword.html");
-            string templateContent = await System.IO.File.ReadAllTextAsync(templateFullPath);
-            string url = Url.Action("ResetPassword", "Account", new { appUser.Id, token }, Request.Scheme, Request.Host.ToString());
-
-            templateContent = templateContent.Replace("{{action_url}}", url);
-            templateContent = templateContent.Replace("{{name}}", appUser.Name);
-
-            MimeMessage mimeMessage = new MimeMessage();
-            mimeMessage.From.Add(MailboxAddress.Parse(_smtpSetting.Email));
-            mimeMessage.To.Add(MailboxAddress.Parse(appUser.Email));
-            mimeMessage.Subject = "Reset  Password";
-            mimeMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-            {
-                Text = templateContent
-            };
-
-            using (SmtpClient client = new SmtpClient())
-            {
-                await client.ConnectAsync(_smtpSetting.Host, _smtpSetting.Port, MailKit.Security.SecureSocketOptions.StartTls);
-                await client.AuthenticateAsync(_smtpSetting.Email, _smtpSetting.Password);
-                await client.SendAsync(mimeMessage);
-                await client.DisconnectAsync(true);
-            }
-
-            return RedirectToAction(nameof(Login));
-        }
+        
 
         //11.ResetPassword(Get)
         public async Task<IActionResult> ResetPassword()
@@ -369,7 +317,7 @@ namespace JuanYunis.Areas.Manage.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResetPassword(string id, string token, ResetPasswordVM resetPasswordVM)
+        public async Task<IActionResult> ResetPassword(string id, string token, ManageResetPasswordVM resetPasswordVM)
         {
             if (!ModelState.IsValid) return View(resetPasswordVM);
 

@@ -24,7 +24,7 @@ namespace JuanYunis.Controllers
 
         public async Task<IActionResult> CheckOut()
         {
-            AppUser appUser = await _userManager.Users
+            AppUser? appUser = await _userManager.Users
                 .Include(u => u.Addresses.Where(a => a.IsDeleted == false && a.isDefault == true))
                 .Include(u => u.Baskets.Where(b => b.IsDeleted == false)).ThenInclude(b => b.Product)
                 .ThenInclude(p => p.ProductImages.Where(pi => pi.IsDeleted == false))
@@ -36,33 +36,40 @@ namespace JuanYunis.Controllers
                 return RedirectToAction("Index", "Product");
             }
 
-            OrderVM orderVM = new OrderVM
+            if (appUser.Addresses?.Count() != null && appUser.Addresses.Count() > 0)
             {
-                Order = new Order
+                OrderVM orderVM = new OrderVM
                 {
-                    Country = appUser.Addresses.First().Country,
-                    Email = appUser.Email,
-                    Line1 = appUser.Addresses.First().Line1,
-                    Line2 = appUser.Addresses.First().Line2,
-                    Name = appUser.Name,
-                    PostalCode = appUser.Addresses.First().PostalCode,
-                    SurName = appUser.SurName,
-                    Town = appUser.Addresses.First().Town,
-                    State = appUser.Addresses.First().State
+                    Order = new Order
+                    {
+                        Country = appUser.Addresses.FirstOrDefault().Country,
+                        Email = appUser.Email,
+                        Line1 = appUser.Addresses.FirstOrDefault().Line1,
+                        Line2 = appUser.Addresses.FirstOrDefault().Line2,
+                        Name = appUser.Name,
+                        PostalCode = appUser.Addresses.FirstOrDefault().PostalCode,
+                        SurName = appUser.SurName,
+                        Town = appUser.Addresses.FirstOrDefault().Town,
+                        State = appUser.Addresses.FirstOrDefault().State
 
-                },
-                BasketVMs = appUser.Baskets.Select(x => new BasketVM
-                {
-                    Id = (int)x.ProductId,
-                    Count = x.Count,
-                    EcoTax = x.Product.EcoTax,
-                    Image = x.Product.ProductImages.FirstOrDefault(pi => pi.IsMainImage == true).Image,
-                    Price = x.Product.DiscountedPrice > 0 ? x.Product.DiscountedPrice : x.Product.Price,
-                    Title = x.Product.Title,
-                }).ToList()
-            };
-
+                    },
+                    BasketVMs = appUser.Baskets.Select(x => new BasketVM
+                    {
+                        Id = (int)x.ProductId,
+                        Count = x.Count,
+                        EcoTax = x.Product.EcoTax,
+                        Image = x.Product.ProductImages.FirstOrDefault(pi => pi.IsMainImage == true).Image,
+                        Price = x.Product.DiscountedPrice > 0 ? x.Product.DiscountedPrice : x.Product.Price,
+                        Title = x.Product.Title,
+                    }).ToList()
+                };
             return View(orderVM);
+            }
+            else
+            {
+                return RedirectToAction("Profile", "Account");
+            }
+
         }
 
         [HttpPost]

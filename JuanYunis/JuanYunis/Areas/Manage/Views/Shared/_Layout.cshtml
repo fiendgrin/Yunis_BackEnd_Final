@@ -94,6 +94,15 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.28/dist/sweetalert2.min.css
             <!-- Divider -->
             <hr class="sidebar-divider">
 
+            <li class="nav-item active">
+                <a class="nav-link" asp-controller="User" asp-action="Index" asp-area="Manage">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Users</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
@@ -106,10 +115,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.7.28/dist/sweetalert2.min.css
                         <h6 class="collapse-header">Login Screens:</h6>
                         
                             <a class="collapse-item" asp-controller="Account" asp-action="Login" asp-area="Manage">Login</a>
-                            <a class="collapse-item" asp-controller="Account" asp-action="Register" asp-area="Manage">Register</a>
-                        
-                        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                        <a class="collapse-item" asp-controller="User" asp-action="Index" asp-area="Manage">Users</a>
+                  
 
                     </div>
                 </div>
