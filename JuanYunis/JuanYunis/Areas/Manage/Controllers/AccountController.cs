@@ -307,53 +307,54 @@ namespace JuanYunis.Areas.Manage.Controllers
 
         
 
-        //11.ResetPassword(Get)
-        public async Task<IActionResult> ResetPassword()
-        {
-            return View();
-        }
+        ////11.ResetPassword(Get)
+        //public async Task<IActionResult> ResetPassword()
+        //{
+        //    return View();
+        //}
 
-        //12.ResetPassword(Post)
+        ////12.ResetPassword(Post)
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResetPassword(string id, string token, ManageResetPasswordVM resetPasswordVM)
-        {
-            if (!ModelState.IsValid) return View(resetPasswordVM);
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> ResetPassword(string id, string token, ManageResetPasswordVM resetPasswordVM)
+        //{
+        //    if (!ModelState.IsValid) return View(resetPasswordVM);
 
-            if (string.IsNullOrWhiteSpace(id))
-            {
-                ModelState.AddModelError("", "Id Is Incorrect");
-                return View(resetPasswordVM);
-            }
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                ModelState.AddModelError("", "Token Is Incorrect");
-                return View(resetPasswordVM);
-            }
+        //    if (string.IsNullOrWhiteSpace(id))
+        //    {
+        //        ModelState.AddModelError("", "Id Is Incorrect");
+        //        return View(resetPasswordVM);
+        //    }
+        //    if (string.IsNullOrWhiteSpace(token))
+        //    {
+        //        ModelState.AddModelError("", "Token Is Incorrect");
+        //        return View(resetPasswordVM);
+        //    }
 
-            AppUser appUser = await _userManager.FindByIdAsync(id);
+        //    AppUser appUser = await _userManager.FindByIdAsync(id);
 
-            if (appUser == null)
-            {
-                ModelState.AddModelError("", "Id Is Incorrect");
-                return View(resetPasswordVM);
-            }
+        //    if (appUser == null)
+        //    {
+        //        ModelState.AddModelError("", "Id Is Incorrect");
+        //        return View(resetPasswordVM);
+        //    }
 
-            IdentityResult identityResult = await _userManager.ResetPasswordAsync(appUser, token, resetPasswordVM.Password);
+        //    IdentityResult identityResult = await _userManager.ResetPasswordAsync(appUser, token, resetPasswordVM.Password);
 
-            if (identityResult.Succeeded)
-            {
-                foreach (IdentityError identityError in identityResult.Errors)
-                {
-                    ModelState.AddModelError("", identityError.Description);
-                }
-                return View(resetPasswordVM);
-            }
+        //    if (identityResult.Succeeded)
+        //    {
+        //        foreach (IdentityError identityError in identityResult.Errors)
+        //        {
+        //            ModelState.AddModelError("", identityError.Description);
+        //        }
+        //        return View(resetPasswordVM);
+        //    }
 
-            return View();
-        }
+        //    return View();
+        //}
 
+      
 
         #region not used
         //public async Task<IActionResult> SuperAdmin()

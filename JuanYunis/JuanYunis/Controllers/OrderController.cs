@@ -32,6 +32,7 @@ namespace JuanYunis.Controllers
 
             if (appUser.Baskets == null || appUser.Baskets.Count() <= 0)
             {
+                
                 TempData["Info"] = "Select Products before checking Out";
                 return RedirectToAction("Index", "Product");
             }
@@ -67,6 +68,8 @@ namespace JuanYunis.Controllers
             }
             else
             {
+                TempData["Tab"] = "Address";
+                TempData["Info"] = "Address Is Required";
                 return RedirectToAction("Profile", "Account");
             }
 

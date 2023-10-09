@@ -73,4 +73,7 @@
     });
 
 
+
+    $('.roleSelector').removeAttr('multiple');
+
 });

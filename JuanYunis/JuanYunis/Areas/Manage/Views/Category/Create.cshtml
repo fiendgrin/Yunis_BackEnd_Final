@@ -10,13 +10,16 @@
 
 <div class="row justify-content-center">
     <div class="col-lg-8">
-        <form method="post">
-            <div class="form-group">
-                <label asp-for="Name"></label>
-                <input asp-for="Name" class="form-control" placeholder="Name...">
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+        <div class="p-3 border border-light bg-gradient-light">
+            <form method="post">
+                <div class="form-group">
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Name...">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
     </div>
 </div>
