@@ -165,6 +165,15 @@ namespace JuanYunis.Areas.Manage.Controllers
             Microsoft.AspNetCore.Identity.SignInResult signInResult = await _signInManager
                 .PasswordSignInAsync(appUser, loginVM.Password, loginVM.RememberMe, true);
 
+            if (appUser.LockoutEnd != null && (appUser.LockoutEnd - DateTime.Now).Value.Minutes > 0)
+            {
+                int date = (appUser.LockoutEnd - DateTime.Now).Value.Minutes;
+
+                ModelState.AddModelError("", $"Your Account is blocked ({date} minutes left)");
+                return View(loginVM);
+            }
+
+
             if (!signInResult.Succeeded)
             {
                 ModelState.AddModelError("", "Email or password are incorrect");

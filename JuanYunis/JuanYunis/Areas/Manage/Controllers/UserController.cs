@@ -37,6 +37,25 @@ namespace JuanYunis.Areas.Manage.Controllers
             return View(PageNatedList<AppUser>.Create(users.AsQueryable(), currentPage, 5, 8));
         }
 
+        public async Task<IActionResult> Detail(string? id) 
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return BadRequest();
+            }
+
+            AppUser? appUser = await _context.Users
+                .Include(u => u.Addresses.Where(a => a.IsDeleted == false))
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (appUser == null)
+            {
+                return NotFound();
+            }
+            appUser.Roles = await _userManager.GetRolesAsync(appUser);
+
+            return View(appUser);
+        }
 
         public async Task<IActionResult> SetActive(string? id, int currentPage)
         {

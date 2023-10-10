@@ -1,0 +1,80 @@
+﻿@model AppUser
+@{
+    ViewData["Title"] = "Detail";
+    TimeSpan? Remaining = Model.LockoutEnd - DateTime.Now;
+    double? totalSeconds = Remaining.GetValueOrDefault().TotalSeconds;
+    int addressNo = 0;
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="text-gray-800 mb-2">User Details</h3>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>SurName</th>
+                    <th>UserName</th>
+                    <th>Email</th>
+                    <th>Roles</th>
+                    <th>Is Active</th>
+                    <th>Is Locked Out</th>
+
+                </tr>
+            </thead>
+            <tbody class="listContainer">
+                <tr>
+                    <td>@Model?.Name</td>
+                    <td>@Model?.SurName</td>
+                    <td>@Model.UserName</td>
+                    <td>@Model.Email</td>
+                    <td>@string.Join(",",Model.Roles.Select(x=>x))</td>
+                    <td class="@(Model.IsActive ? "text-success" : "text-danger")">@(Model.IsActive ? "✓" : "X")</td>
+                    @if (Remaining == null || totalSeconds <= 0)
+                    {
+                        <td>Is <strong class="text-success">NOT</strong> Locked Out</td>
+                    }
+                    else
+                    {
+                        <td><strong class="text-danger">Is</strong> Locked Out</td>
+                           
+                            
+                    }
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    @if (Model.Roles.FirstOrDefault()?.ToString() == "Member" && Model.Addresses != null && Model.Addresses.Count() > 0)
+    {
+        <div class="col-lg-12 mt-5">
+            <h3 class="text-gray-800 mb-2">User Addresses</h3>
+
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Address</th>
+                        <th>Is Default</th>
+                    </tr>
+                </thead>
+                <tbody class="listContainer">
+
+                    @foreach (Address address in Model.Addresses)
+                    {
+                        <tr>
+                            <td>@(++addressNo)</td>
+                            <td>
+                                <span>@address.Line1, @address.Line2,</span>
+                                <span>@address.Country, @address.Town,</span>
+                                <span>@address.State, @address.PostalCode,</span>
+                            </td>
+                            <td class="@(address.isDefault ? "text-success" : "text-danger")"><strong>@(address.isDefault ? "✓" : "X")</strong></td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
