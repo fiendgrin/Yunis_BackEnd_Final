@@ -25,7 +25,7 @@
             <div class="product-details-des">
                 <h3 class="pro-det-title">@Model.Title</h3>
                 <div class="pro-review">
-                    <span><a href="#">1 Review(s)</a></span>
+                    <span><a href="#">@Model.Reviews.Count() Review(s)</a></span>
                 </div>
                 <div class="price-box">
                     @if (Model.DiscountedPrice != null && Model.DiscountedPrice > 0)

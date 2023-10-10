@@ -56,14 +56,15 @@
                                 <div class="product-details-des">
                                     <h3 class="pro-det-title">@Model.Title</h3>
                                     <div class="pro-review">
-                                        <span><a href="#">1 Review(s)</a></span>
+                                        <span><a href="#">@Model.Reviews.Count() Review(s)</a></span>
                                     </div>
                                     <div class="price-box">
                                         @if (Model.DiscountedPrice != null && Model.DiscountedPrice > 0)
                                         {
                                             <span class="regular-price">$@Model.DiscountedPrice</span>
                                             <span class="old-price"><del>$@Model.Price</del></span>
-                                        }else
+                                        }
+                                        else
                                         {
                                             <span class="regular-price">$@Model.Price</span>
                                         }
@@ -76,10 +77,11 @@
                                     </div>
                                     <div class="availability mb-20">
                                         <h5 class="cat-title">Availability:</h5>
-                                       @if (Model.Count != null && Model.Count > 0)
+                                        @if (Model.Count != null && Model.Count > 0)
                                         {
                                             <span>In Stock</span>
-                                        }else
+                                        }
+                                        else
                                         {
                                             <span class="text-danger">Out Of Stock</span>
                                         }
@@ -108,7 +110,7 @@
                                     <div class="tab-content reviews-tab">
                                         <div class="tab-pane fade show active" id="tab_one">
                                             <div class="tab-one">
-                                               @Html.Raw(Model.FullDescription)
+                                                @Html.Raw(Model.FullDescription)
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="tab_two">
@@ -126,65 +128,54 @@
                                             </table>
                                         </div>
                                         <div class="tab-pane fade" id="tab_three">
-                                            <form action="#" class="review-form">
-                                                <h5>1 review for <span>Chaz Kangeroo Hoodies</span></h5>
-                                                <div class="total-reviews">
-                                                    <div class="rev-avatar">
-                                                        <img src="~/assets/img/about/avatar.jpg" alt="">
-                                                    </div>
-                                                    <div class="review-box">
-                                                        <div class="ratings">
-                                                            <span class="good"><i class="fa fa-star"></i></span>
-                                                            <span class="good"><i class="fa fa-star"></i></span>
-                                                            <span class="good"><i class="fa fa-star"></i></span>
-                                                            <span class="good"><i class="fa fa-star"></i></span>
-                                                            <span><i class="fa fa-star"></i></span>
+                                            <h6 style="font-weight:400" class="pro-det-title pb-1">Reviews For product:<span> "@(Model.Title)"</span></h6>
+                                            <div style="overflow:auto; max-height:400px;border:1px dashed #e3a51e; border-radius:10px;" class="reviewContainer p-3">
+                                                @if (Model.Reviews != null && Model.Reviews.Count() > 0)
+                                                {
+                                                    @await Html.PartialAsync("_ReviewsPartial",Model.Reviews)
+                                                }
+                                                else
+                                                {
+                                                    <p>No reviews yet...</p>
+                                                }
+
+                                            </div>
+
+                                            @if (User.Identity.IsAuthenticated && User.IsInRole("Member"))
+                                            {
+                                                <div class="mt-3">
+                                                    <form method="post" asp-controller="Product" asp-action="Review" asp-route-productId="@Model.Id" class="review-form">
+
+                                                        <div class="form-group row">
+                                                            <div class="col">
+                                                                <label for="comment" class="col-form-label"><span class="text-danger">*</span>Your Review</label>
+                                                                <textarea name="comment" class="form-control" required></textarea>
+                                                            </div>
                                                         </div>
-                                                        <div class="post-author">
-                                                            <p><span>admin -</span> 30 Nov, 2018</p>
+                                                        <div class="form-group row">
+                                                            <div class="col">
+                                                                <label for="rating" class="col-form-label"><span class="text-danger">*</span> Rating</label>
+                                                                &nbsp;&nbsp;&nbsp; Bad&nbsp;
+                                                                <input type="radio" value="1" name="rating">
+                                                                &nbsp;
+                                                                <input type="radio" value="2" name="rating">
+                                                                &nbsp;
+                                                                <input type="radio" value="3" name="rating">
+                                                                &nbsp;
+                                                                <input type="radio" value="4" name="rating">
+                                                                &nbsp;
+                                                                <input type="radio" value="5" name="rating" checked>
+                                                                &nbsp;Good
+                                                            </div>
                                                         </div>
-                                                        <p>Aliquam fringilla euismod risus ac bibendum. Sed sit amet sem varius ante feugiat lacinia. Nunc ipsum nulla, vulputate ut venenatis vitae, malesuada ut mi. Quisque iaculis, dui congue placerat pretium, augue erat accumsan lacus</p>
-                                                    </div>
+                                                        <div class="buttons">
+                                                            <button class="sqr-btn btn postReview" type="submit">Post</button>
+                                                        </div>
+                                                    </form> <!-- end of review-form -->
                                                 </div>
-                                                <div class="form-group row">
-                                                    <div class="col">
-                                                        <label class="col-form-label"><span class="text-danger">*</span> Your Name</label>
-                                                        <input type="text" class="form-control" required>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <div class="col">
-                                                        <label class="col-form-label"><span class="text-danger">*</span> Your Email</label>
-                                                        <input type="email" class="form-control" required>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <div class="col">
-                                                        <label class="col-form-label"><span class="text-danger">*</span> Your Review</label>
-                                                        <textarea class="form-control" required></textarea>
-                                                        <div class="help-block pt-10"><span class="text-danger">Note:</span> HTML is not translated!</div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <div class="col">
-                                                        <label class="col-form-label"><span class="text-danger">*</span> Rating</label>
-                                                        &nbsp;&nbsp;&nbsp; Bad&nbsp;
-                                                        <input type="radio" value="1" name="rating">
-                                                        &nbsp;
-                                                        <input type="radio" value="2" name="rating">
-                                                        &nbsp;
-                                                        <input type="radio" value="3" name="rating">
-                                                        &nbsp;
-                                                        <input type="radio" value="4" name="rating">
-                                                        &nbsp;
-                                                        <input type="radio" value="5" name="rating" checked>
-                                                        &nbsp;Good
-                                                    </div>
-                                                </div>
-                                                <div class="buttons">
-                                                    <button class="sqr-btn" type="submit">Continue</button>
-                                                </div>
-                                            </form> <!-- end of review-form -->
+                                                
+                                            }
+
                                         </div>
                                     </div>
                                 </div>

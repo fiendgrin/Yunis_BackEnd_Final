@@ -1,6 +1,8 @@
 ﻿using JuanYunis.DataAccessLayer;
+using JuanYunis.Enums;
 using JuanYunis.Models;
 using JuanYunis.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,16 +12,19 @@ namespace JuanYunis.Controllers
     {
         private readonly AppDbContext _context;
         private readonly int _pageSize = 9;
-        public ProductController(AppDbContext context)
+        private readonly UserManager<AppUser> _userManager;
+        public ProductController(AppDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         //1.Index
         //2.LoadMore
         //3.Search
         //4.Moadl
-
+        //5.Detail
+        //6.Review
         //1.Index
         public IActionResult Index( int currentPage = 1, int? categoryId = null)
         {
@@ -104,6 +109,7 @@ namespace JuanYunis.Controllers
             if (id == null) return BadRequest("Id is required");
 
             Product product = await _context.Products
+                .Include(p => p.Reviews.Where(r => r.IsDeleted == false))
                 .Include(p => p.ProductImages.Where(pi => pi.IsDeleted == false)).
                 FirstOrDefaultAsync(p => p.IsDeleted == false && p.Id == id);
 
@@ -117,6 +123,7 @@ namespace JuanYunis.Controllers
             if (id == null) return BadRequest();
 
             Product? product = await _context.Products
+                .Include(p => p.Reviews.Where(r => r.IsDeleted == false)).ThenInclude(r => r.User)
                 .Include(p=>p.ProductImages.Where(pi=>pi.IsDeleted == false))
                 .FirstOrDefaultAsync(p => p.Id == id && p.IsDeleted == false);
 
@@ -124,6 +131,42 @@ namespace JuanYunis.Controllers
 
             return View(product);
         }
+        //6.Review
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Review(string? comment, int? productId, int? rating) 
+        {
+            if (!User.Identity.IsAuthenticated) return Unauthorized(); 
 
+            if (productId == null || string.IsNullOrWhiteSpace(comment) || rating == null)
+            {
+                return BadRequest();
+            }
+
+            AppUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            Review review = new Review
+            {
+                Comment = comment,
+                CreatedAt = DateTime.Now,
+                CreatedBy = User.Identity.Name,
+                IsDeleted = false,
+                ProductId = productId,
+                Rating = (Rating)rating,
+                UserId = user.Id
+            };
+
+            await _context.Reviews.AddAsync(review);
+            await _context.SaveChangesAsync();
+
+
+
+            return RedirectToAction( "Detail","Product",new {id=productId } );
+        }
     }
 }

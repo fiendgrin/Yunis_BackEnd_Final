@@ -1,0 +1,21 @@
+﻿@model IEnumerable<Review>
+
+
+    @foreach (Review review in Model)
+    {
+        <!-- Single Review Start -->
+        <div style="border-bottom:1px solid lightgrey;" class="review-box mb-3 pb-2">
+            <div class="ratings">
+            <span class=""><i class="@((int)review.Rating>=1?"fa fa-star":"fa fa-star-o")"></i></span>
+            <span class=""><i class="@((int)review.Rating>=2?"fa fa-star":"fa fa-star-o")"></i></span>
+            <span class=""><i class="@((int)review.Rating>=3?"fa fa-star":"fa fa-star-o")"></i></span>
+            <span class=""><i class="@((int)review.Rating>=4?"fa fa-star":"fa fa-star-o")"></i></span>
+            <span class=""><i class="@((int)review.Rating>=5?"fa fa-star":"fa fa-star-o")"></i></span>
+            </div>
+            <div class="post-author">
+            <p><span><strong>@review.User?.Name @review.User?.SurName</strong>,</span> @((review.CreatedAt).ToString("dd / MMMM / yyyy"))</p>
+            </div>
+        <p><i>@review.Comment</i></p>
+        </div>
+        <!-- Single Review End!!!!!! -->
+    }
